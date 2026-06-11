@@ -120,7 +120,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "author", content: "Oficina Vale" },
       { name: "theme-color", content: "#0D0D0D" },
-      { property: "og:title", content: "Oficina Vale — Oficina Auto no Seixal" },
+      { property: "og:title", content: "Oficina Vale — Oficina Auto no Seixal | Marcações Online" },
       {
         property: "og:description",
         content: "A sua oficina de confiança no Seixal. Marcação online em 30 segundos.",
@@ -128,6 +128,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_PT" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Oficina Vale — Oficina Auto no Seixal | Marcações Online" },
+      { name: "description", content: "Bem vindo a oficina Vale, uma oficina onde nos destacamos pela honestidade e profissionalismo e sempre com os melhores preços do mercado, tratamos do seu veícul" },
+      { property: "og:description", content: "Bem vindo a oficina Vale, uma oficina onde nos destacamos pela honestidade e profissionalismo e sempre com os melhores preços do mercado, tratamos do seu veícul" },
+      { name: "twitter:description", content: "Bem vindo a oficina Vale, uma oficina onde nos destacamos pela honestidade e profissionalismo e sempre com os melhores preços do mercado, tratamos do seu veícul" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/337F5yxA42ZYtKzA4jQVL4JzvMG2/social-images/social-1781197142087-oficinaVale.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/337F5yxA42ZYtKzA4jQVL4JzvMG2/social-images/social-1781197142087-oficinaVale.webp" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
