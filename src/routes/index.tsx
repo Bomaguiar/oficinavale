@@ -135,7 +135,7 @@ function Index() {
           className="absolute inset-0 -z-10"
           style={{
             background:
-              "linear-gradient(180deg, rgba(13,13,15,0.88) 0%, rgba(13,13,15,0.94) 60%, var(--background) 100%)",
+              "linear-gradient(180deg, rgba(13,13,15,0.55) 0%, rgba(13,13,15,0.75) 60%, var(--background) 100%)",
           }}
         />
         <div
@@ -181,7 +181,7 @@ function Index() {
           <div className="mt-10 flex items-center gap-3">
             <img
               src={googleBadge.url}
-              alt="Google 4,8 estrelas"
+              alt="Google 4,9 estrelas"
               className="h-14 w-auto"
               width={56}
               height={56}
@@ -191,7 +191,7 @@ function Index() {
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="h-3.5 w-3.5 fill-current" />
                 ))}
-                <span className="ml-1 font-semibold text-foreground">4,8</span>
+                <span className="ml-1 font-semibold text-foreground">4,9</span>
               </div>
               <p className="text-muted-foreground text-xs">avaliações reais no Google</p>
             </div>
