@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Phone,
   MessageCircle,
@@ -598,15 +598,11 @@ function track(event: string, data?: Record<string, unknown>) {
 
 function CookieBanner() {
   const [show, setShow] = useState(false);
-  // Read localStorage after mount to avoid SSR/CSR hydration mismatch.
-  if (typeof window !== "undefined") {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffectOnce(() => {
-      try {
-        if (localStorage.getItem("ov-cookie") !== "1") setShow(true);
-      } catch {}
-    });
-  }
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("ov-cookie") !== "1") setShow(true);
+    } catch {}
+  }, []);
   if (!show) return null;
   return (
     <div className="fixed bottom-20 sm:bottom-4 inset-x-2 sm:inset-x-auto sm:right-4 sm:max-w-sm z-50 rounded-xl border border-border bg-surface p-4 text-sm shadow-2xl">
