@@ -20,6 +20,7 @@ import {
 
 import { BookingModal } from "@/components/BookingModal";
 import { ChatWidget } from "@/components/ChatWidget";
+import { AnimatedLogo } from "@/components/AnimatedLogo";
 import { PHONE, PHONE_DISPLAY, whatsappLink } from "@/lib/whatsapp";
 
 import logoAsset from "@/assets/logo-banner.asset.json";
@@ -27,6 +28,7 @@ import googleBadge from "@/assets/google-badge.asset.json";
 import vanAsset from "@/assets/van.asset.json";
 import ownerAsset from "@/assets/owner.asset.json";
 import headlightAsset from "@/assets/headlight.asset.json";
+import heroBg from "@/assets/hero-bg.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -95,14 +97,8 @@ function Index() {
       {/* NAV */}
       <header className="fixed top-0 inset-x-0 z-30 backdrop-blur-md bg-background/70 border-b border-border">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center justify-between">
-          <a href="#top" className="flex items-center gap-2">
-            <img
-              src={logoAsset.url}
-              alt="Oficina Vale"
-              className="h-8 sm:h-9 w-auto"
-              width={140}
-              height={36}
-            />
+          <a href="#top" className="flex items-center gap-2" aria-label="Oficina Vale — início">
+            <AnimatedLogo size={22} />
           </a>
           <a
             href={`tel:${PHONE}`}
@@ -127,19 +123,27 @@ function Index() {
       <section id="top" className="relative min-h-dvh flex items-center pt-24 pb-32 sm:pb-24 px-4 sm:px-6 overflow-hidden">
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 opacity-30"
+          className="absolute inset-0 -z-20"
           style={{
-            backgroundImage:
-              "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(227,34,25,0.25), transparent 60%)",
+            backgroundImage: `url(${heroBg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
         />
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 opacity-[0.04]"
+          className="absolute inset-0 -z-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(13,13,15,0.72) 0%, rgba(13,13,15,0.85) 60%, var(--background) 100%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 opacity-60"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
-            backgroundSize: "44px 44px",
+              "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(227,34,25,0.25), transparent 60%)",
           }}
         />
         <div className="mx-auto max-w-6xl w-full">
@@ -375,7 +379,7 @@ function Index() {
 
           <div className="mt-8 flex flex-wrap gap-3">
             <a
-              href="https://www.facebook.com/oficinavale"
+              href="https://www.facebook.com/people/Oficina-Vale/100056785751097/?sk=reviews"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
@@ -383,7 +387,7 @@ function Index() {
               <Facebook className="h-4 w-4" /> Ver avaliações no Facebook
             </a>
             <a
-              href="https://www.google.com/search?q=Oficina+Vale+Seixal"
+              href="https://www.google.com/search?sxsrf=ANbL-n6A76bUvGmOyL4_AL0wVp6mS_qxfA:1781209801349&q=Oficina+Vale+Reviews&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxIxNLM0tbQwtjAysjQzszAzNDUyttzAyPiKUcQ_LTM5My9RISwxJ1UhKLUsM7W8eBErVmEA3s8aMEkAAAA&rldimm=16959838229668615239&tbm=lcl&hl=en-PT#lkt=LocalPoiReviews"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
@@ -520,7 +524,7 @@ function Index() {
             <p className="font-semibold mb-3">Siga-nos</p>
             <div className="flex gap-3">
               <a
-                href="https://www.facebook.com/oficinavale"
+                href="https://www.facebook.com/people/Oficina-Vale/100056785751097/?sk=reviews"
                 aria-label="Facebook"
                 target="_blank"
                 rel="noopener noreferrer"
