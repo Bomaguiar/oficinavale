@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Phone,
   MessageCircle,
@@ -135,7 +135,7 @@ function Index() {
           className="absolute inset-0 -z-10"
           style={{
             background:
-              "linear-gradient(180deg, rgba(13,13,15,0.72) 0%, rgba(13,13,15,0.85) 60%, var(--background) 100%)",
+              "linear-gradient(180deg, rgba(13,13,15,0.88) 0%, rgba(13,13,15,0.94) 60%, var(--background) 100%)",
           }}
         />
         <div
@@ -504,7 +504,7 @@ function Index() {
       <footer className="px-4 sm:px-6 py-12 border-t border-border">
         <div className="mx-auto max-w-6xl grid sm:grid-cols-3 gap-8 text-sm">
           <div>
-            <img src={logoAsset.url} alt="Oficina Vale" className="h-9 w-auto" />
+            <AnimatedLogo size={22} />
             <p className="mt-4 text-muted-foreground">
               Oficina auto multimarca no Seixal. Reparação honesta, preço justo.
             </p>
@@ -597,14 +597,12 @@ function track(event: string, data?: Record<string, unknown>) {
 }
 
 function CookieBanner() {
-  const [show, setShow] = useState(() => {
-    if (typeof window === "undefined") return false;
+  const [show, setShow] = useState(false);
+  useEffect(() => {
     try {
-      return localStorage.getItem("ov-cookie") !== "1";
-    } catch {
-      return false;
-    }
-  });
+      if (localStorage.getItem("ov-cookie") !== "1") setShow(true);
+    } catch {}
+  }, []);
   if (!show) return null;
   return (
     <div className="fixed bottom-20 sm:bottom-4 inset-x-2 sm:inset-x-auto sm:right-4 sm:max-w-sm z-50 rounded-xl border border-border bg-surface p-4 text-sm shadow-2xl">
