@@ -17,9 +17,23 @@ const SERVICES = [
 ];
 
 const SLOTS = [
-  "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
-  "11:00", "11:30", "12:00", "14:00", "14:30", "15:00",
-  "15:30", "16:00", "16:30", "17:00", "17:30",
+  "08:00",
+  "08:30",
+  "09:00",
+  "09:30",
+  "10:00",
+  "10:30",
+  "11:00",
+  "11:30",
+  "12:00",
+  "14:00",
+  "14:30",
+  "15:00",
+  "15:30",
+  "16:00",
+  "16:30",
+  "17:00",
+  "17:30",
 ];
 
 function nextWeekdays(count = 14) {
@@ -37,7 +51,12 @@ function nextWeekdays(count = 14) {
 const formatDate = (d: Date) =>
   d.toLocaleDateString("pt-PT", { weekday: "short", day: "2-digit", month: "short" });
 const formatDateLong = (d: Date) =>
-  d.toLocaleDateString("pt-PT", { weekday: "long", day: "2-digit", month: "long", year: "numeric" });
+  d.toLocaleDateString("pt-PT", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
 
 const schema = z.object({
   name: z.string().trim().min(2, "Indique o seu nome").max(80),
@@ -120,9 +139,7 @@ export function BookingModal({
                 {[1, 2, 3].map((n) => (
                   <div
                     key={n}
-                    className={`h-1 flex-1 rounded-full ${
-                      n <= step ? "bg-brand" : "bg-white/10"
-                    }`}
+                    className={`h-1 flex-1 rounded-full ${n <= step ? "bg-brand" : "bg-white/10"}`}
                   />
                 ))}
               </div>
@@ -243,9 +260,7 @@ export function BookingModal({
                     >
                       Continuar
                     </button>
-
                   </div>
-
                 </div>
               )}
 
@@ -297,9 +312,7 @@ export function BookingModal({
                       .
                     </span>
                   </label>
-                  {errors.consent && (
-                    <p className="text-xs text-destructive">{errors.consent}</p>
-                  )}
+                  {errors.consent && <p className="text-xs text-destructive">{errors.consent}</p>}
                   <div className="grid grid-cols-[6rem_minmax(0,1fr)] gap-2 pt-2">
                     <button
                       onClick={() => setStep(2)}
