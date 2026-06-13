@@ -28,7 +28,7 @@ import googleBadge from "@/assets/google-badge.asset.json";
 import vanAsset from "@/assets/van.asset.json";
 import ownerAsset from "@/assets/owner.asset.json";
 import headlightAsset from "@/assets/headlight.asset.json";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "@/assets/hero-workshop-bg.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -52,32 +52,45 @@ export const Route = createFileRoute("/")({
 });
 
 const SERVICES = [
-  { icon: Wrench, name: "Manutenção e Revisões", desc: "Mudanças de óleo, filtros, correia. O básico, bem feito." },
+  {
+    icon: Wrench,
+    name: "Manutenção e Revisões",
+    desc: "Mudanças de óleo, filtros, correia. O básico, bem feito.",
+  },
   { icon: Disc3, name: "Travões", desc: "Pastilhas, discos e líquido. Para travar a sério." },
-  { icon: Cpu, name: "Diagnóstico Eletrónico", desc: "Leitura de avarias com equipamento multimarca." },
+  {
+    icon: Cpu,
+    name: "Diagnóstico Eletrónico",
+    desc: "Leitura de avarias com equipamento multimarca.",
+  },
   { icon: Gauge, name: "Pneus e Alinhamento", desc: "Montagem, equilibragem e direção a direito." },
-  { icon: Lightbulb, name: "Restauro de Faróis", desc: "Faróis novos sem trocar peças. Vê a diferença." },
-  { icon: ClipboardCheck, name: "Pré-Inspeção IPO", desc: "Check-up completo antes do centro de inspeções." },
+  {
+    icon: Lightbulb,
+    name: "Restauro de Faróis",
+    desc: "Faróis novos sem trocar peças. Vê a diferença.",
+  },
+  {
+    icon: ClipboardCheck,
+    name: "Pré-Inspeção IPO",
+    desc: "Check-up completo antes do centro de inspeções.",
+  },
 ];
 
 const REVIEWS = [
   {
     name: "Bruno Reis",
     date: "Setembro 2024",
-    text:
-      "Oficina de qualidade, que demonstra altos conhecimentos mecânicos a todos os níveis, prontos para resolver qualquer avaria. Preço justo e transparência total na resolução. Aconselho vivamente.",
+    text: "Oficina de qualidade, que demonstra altos conhecimentos mecânicos a todos os níveis, prontos para resolver qualquer avaria. Preço justo e transparência total na resolução. Aconselho vivamente.",
   },
   {
     name: "Carlos Gaudêncio",
     date: "Dezembro 2023",
-    text:
-      "Não podia mesmo estar mais contente. Fui comprar o meu primeiro carro e o Xsara que comprei está IMPECÁVEL! Tive a maior sorte em encontrar esta oficina. Ando a sugerir a amigos e família.",
+    text: "Não podia mesmo estar mais contente. Fui comprar o meu primeiro carro e o Xsara que comprei está IMPECÁVEL! Tive a maior sorte em encontrar esta oficina. Ando a sugerir a amigos e família.",
   },
   {
     name: "Américo Jorge Faria",
     date: "Março 2021",
-    text:
-      "Estamos perante um atendimento sério e muito profissional. Recomendado para quem tem algum tipo de problema com a sua viatura — nesta oficina o seu carro será altamente bem reparado, com grande profissionalismo e honestidade.",
+    text: "Estamos perante um atendimento sério e muito profissional. Recomendado para quem tem algum tipo de problema com a sua viatura — nesta oficina o seu carro será altamente bem reparado, com grande profissionalismo e honestidade.",
   },
 ];
 
@@ -120,33 +133,35 @@ function Index() {
       </header>
 
       {/* HERO */}
-      <section id="top" className="relative min-h-dvh flex items-center pt-24 pb-32 sm:pb-24 px-4 sm:px-6 overflow-hidden">
-        <div
+      <section
+        id="top"
+        className="relative isolate min-h-dvh flex items-center pt-24 pb-32 sm:pb-24 px-4 sm:px-6 overflow-hidden bg-background"
+      >
+        <img
           aria-hidden
-          className="absolute inset-0 -z-20"
-          style={{
-            backgroundImage: `url(${heroBg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          src={heroBg}
+          alt=""
+          width={1440}
+          height={1600}
+          className="absolute inset-0 z-0 h-full w-full object-cover object-right opacity-90"
         />
         <div
           aria-hidden
-          className="absolute inset-0 -z-10"
+          className="absolute inset-0 z-10"
           style={{
             background:
-              "linear-gradient(180deg, rgba(13,13,15,0.55) 0%, rgba(13,13,15,0.75) 60%, var(--background) 100%)",
+              "linear-gradient(90deg, rgba(13,13,15,0.9) 0%, rgba(13,13,15,0.62) 46%, rgba(13,13,15,0.08) 100%), linear-gradient(180deg, rgba(13,13,15,0.1) 0%, rgba(13,13,15,0.28) 58%, var(--background) 100%)",
           }}
         />
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 opacity-60"
+          className="absolute inset-0 z-10 opacity-60"
           style={{
             backgroundImage:
               "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(227,34,25,0.25), transparent 60%)",
           }}
         />
-        <div className="mx-auto max-w-6xl w-full">
+        <div className="relative z-20 mx-auto max-w-6xl w-full">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1 text-xs text-muted-foreground mb-6">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
             Aberto agora · Seg–Sex 08:00–18:00
@@ -285,7 +300,8 @@ function Index() {
                 Faróis como novos. Sem trocar peças.
               </h3>
               <p className="mt-4 text-muted-foreground">
-                Restauramos a transparência dos faróis em poucas horas. Mais visibilidade, mais segurança, e o seu carro com outra cara.
+                Restauramos a transparência dos faróis em poucas horas. Mais visibilidade, mais
+                segurança, e o seu carro com outra cara.
               </p>
               <button
                 onClick={() => openBooking("Restauro de Faróis")}
@@ -317,17 +333,17 @@ function Index() {
             />
           </div>
           <div>
-            <p className="text-brand text-sm font-medium uppercase tracking-wider">
-              Quem somos
-            </p>
+            <p className="text-brand text-sm font-medium uppercase tracking-wider">Quem somos</p>
             <h2 className="font-display text-4xl sm:text-5xl font-bold mt-2 text-balance">
               Pessoas reais. Reparações honestas.
             </h2>
             <p className="mt-6 text-muted-foreground text-lg">
-              Somos uma oficina de bairro no Seixal. Aqui não há surpresas na conta — explicamos o problema, mostramos a peça, e só fazemos o que é preciso.
+              Somos uma oficina de bairro no Seixal. Aqui não há surpresas na conta — explicamos o
+              problema, mostramos a peça, e só fazemos o que é preciso.
             </p>
             <p className="mt-4 text-muted-foreground">
-              Trabalhamos todas as marcas, com equipamento de diagnóstico atualizado e o cuidado de quem trata do carro como se fosse o seu.
+              Trabalhamos todas as marcas, com equipamento de diagnóstico atualizado e o cuidado de
+              quem trata do carro como se fosse o seu.
             </p>
             <button
               onClick={() => openBooking()}
@@ -369,9 +385,7 @@ function Index() {
                 </blockquote>
                 <figcaption className="mt-6 pt-4 border-t border-border">
                   <p className="font-semibold">{r.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    Recomenda no Facebook · {r.date}
-                  </p>
+                  <p className="text-xs text-muted-foreground">Recomenda no Facebook · {r.date}</p>
                 </figcaption>
               </figure>
             ))}
@@ -577,11 +591,7 @@ function Index() {
       </div>
 
       <ChatWidget />
-      <BookingModal
-        open={bookingOpen}
-        onOpenChange={setBookingOpen}
-        initialService={preselected}
-      />
+      <BookingModal open={bookingOpen} onOpenChange={setBookingOpen} initialService={preselected} />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { bookingWhatsappLink } from "@/lib/whatsapp";
@@ -18,9 +17,23 @@ const SERVICES = [
 ];
 
 const SLOTS = [
-  "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
-  "11:00", "11:30", "12:00", "14:00", "14:30", "15:00",
-  "15:30", "16:00", "16:30", "17:00", "17:30",
+  "08:00",
+  "08:30",
+  "09:00",
+  "09:30",
+  "10:00",
+  "10:30",
+  "11:00",
+  "11:30",
+  "12:00",
+  "14:00",
+  "14:30",
+  "15:00",
+  "15:30",
+  "16:00",
+  "16:30",
+  "17:00",
+  "17:30",
 ];
 
 function nextWeekdays(count = 14) {
@@ -38,7 +51,12 @@ function nextWeekdays(count = 14) {
 const formatDate = (d: Date) =>
   d.toLocaleDateString("pt-PT", { weekday: "short", day: "2-digit", month: "short" });
 const formatDateLong = (d: Date) =>
-  d.toLocaleDateString("pt-PT", { weekday: "long", day: "2-digit", month: "long", year: "numeric" });
+  d.toLocaleDateString("pt-PT", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
 
 const schema = z.object({
   name: z.string().trim().min(2, "Indique o seu nome").max(80),
@@ -109,9 +127,9 @@ export function BookingModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg bg-surface border-border p-0 overflow-hidden">
+      <DialogContent className="w-[calc(100vw-1.5rem)] max-w-lg max-h-[calc(100dvh-1.5rem)] bg-surface border-border p-0 overflow-hidden">
         <div className="bg-brand h-1 w-full" />
-        <div className="p-6 sm:p-8">
+        <div className="max-h-[calc(100dvh-2rem)] overflow-y-auto overflow-x-hidden p-6 sm:p-8">
           <DialogHeader>
             <DialogTitle className="text-2xl font-display">
               {done ? "Marcação enviada" : "Marcar serviço"}
@@ -121,9 +139,7 @@ export function BookingModal({
                 {[1, 2, 3].map((n) => (
                   <div
                     key={n}
-                    className={`h-1 flex-1 rounded-full ${
-                      n <= step ? "bg-brand" : "bg-white/10"
-                    }`}
+                    className={`h-1 flex-1 rounded-full ${n <= step ? "bg-brand" : "bg-white/10"}`}
                   />
                 ))}
               </div>
@@ -190,7 +206,7 @@ export function BookingModal({
                 <div className="space-y-4">
                   <div>
                     <p className="text-sm text-muted-foreground mb-2">Escolha o dia</p>
-                    <div className="flex gap-2 overflow-x-auto pb-2">
+                    <div className="flex max-w-full min-w-0 gap-2 overflow-x-auto pb-2">
                       {dates.map((d) => {
                         const sel = date && d.toDateString() === date.toDateString();
                         return (
@@ -211,7 +227,7 @@ export function BookingModal({
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground mb-2">Escolha a hora</p>
-                    <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {SLOTS.map((s) => (
                         <button
                           key={s}
@@ -230,24 +246,21 @@ export function BookingModal({
                       Apenas dias úteis, 08:00–18:00.
                     </p>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="grid grid-cols-[6rem_minmax(0,1fr)] gap-2">
                     <button
                       onClick={() => setStep(1)}
-                      className="inline-flex items-center justify-center gap-1 rounded-md border border-border bg-background px-4 h-10 text-sm font-medium text-foreground hover:border-white/30"
+                      className="inline-flex h-10 items-center justify-center gap-1 rounded-md border border-border bg-background px-3 text-sm font-medium text-foreground hover:border-white/30"
                     >
                       <ChevronLeft className="h-4 w-4" /> Voltar
                     </button>
                     <button
                       disabled={!date || !time}
                       onClick={() => setStep(3)}
-                      style={{ color: "#fff", backgroundColor: "var(--brand)" }}
-                      className="flex-1 inline-flex items-center justify-center rounded-md px-4 h-10 text-sm font-semibold hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="inline-flex h-10 min-w-0 w-full items-center justify-center rounded-md bg-brand px-4 text-sm font-semibold text-brand-foreground hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Continuar
                     </button>
-
                   </div>
-
                 </div>
               )}
 
@@ -299,19 +312,17 @@ export function BookingModal({
                       .
                     </span>
                   </label>
-                  {errors.consent && (
-                    <p className="text-xs text-destructive">{errors.consent}</p>
-                  )}
-                  <div className="flex gap-2 pt-2">
+                  {errors.consent && <p className="text-xs text-destructive">{errors.consent}</p>}
+                  <div className="grid grid-cols-[6rem_minmax(0,1fr)] gap-2 pt-2">
                     <button
                       onClick={() => setStep(2)}
-                      className="inline-flex items-center justify-center gap-1 rounded-md border border-border bg-background px-4 h-10 text-sm font-medium text-foreground hover:border-white/30"
+                      className="inline-flex h-10 items-center justify-center gap-1 rounded-md border border-border bg-background px-3 text-sm font-medium text-foreground hover:border-white/30"
                     >
                       <ChevronLeft className="h-4 w-4" /> Voltar
                     </button>
                     <button
                       onClick={submit}
-                      className="flex-1 inline-flex items-center justify-center rounded-md px-4 h-10 text-sm font-semibold bg-brand text-brand-foreground hover:opacity-90"
+                      className="inline-flex h-10 min-w-0 w-full items-center justify-center rounded-md bg-brand px-4 text-sm font-semibold text-brand-foreground hover:opacity-90"
                     >
                       Confirmar marcação
                     </button>
