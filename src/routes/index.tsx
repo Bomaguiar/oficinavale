@@ -28,7 +28,7 @@ import googleBadge from "@/assets/google-badge.asset.json";
 import vanAsset from "@/assets/van.asset.json";
 import ownerAsset from "@/assets/owner.asset.json";
 import headlightAsset from "@/assets/headlight.asset.json";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "@/assets/hero-workshop-bg.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -127,7 +127,7 @@ function Index() {
           style={{
             backgroundImage: `url(${heroBg})`,
             backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundPosition: "58% center",
           }}
         />
         <div
@@ -135,7 +135,7 @@ function Index() {
           className="absolute inset-0 -z-10"
           style={{
             background:
-              "linear-gradient(180deg, rgba(13,13,15,0.55) 0%, rgba(13,13,15,0.75) 60%, var(--background) 100%)",
+              "linear-gradient(90deg, rgba(13,13,15,0.98) 0%, rgba(13,13,15,0.82) 42%, rgba(13,13,15,0.16) 78%, rgba(13,13,15,0.48) 100%), linear-gradient(180deg, rgba(13,13,15,0.18) 0%, rgba(13,13,15,0.42) 58%, var(--background) 100%)",
           }}
         />
         <div
