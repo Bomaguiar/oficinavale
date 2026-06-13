@@ -143,14 +143,14 @@ function Index() {
           alt=""
           width={1440}
           height={1600}
-          className="absolute inset-0 z-0 h-full w-full object-cover object-[66%_center] opacity-80"
+          className="absolute inset-0 z-0 h-full w-full object-cover object-right opacity-90"
         />
         <div
           aria-hidden
           className="absolute inset-0 z-10"
           style={{
             background:
-              "linear-gradient(90deg, rgba(13,13,15,0.86) 0%, rgba(13,13,15,0.68) 46%, rgba(13,13,15,0.12) 100%), linear-gradient(180deg, rgba(13,13,15,0.18) 0%, rgba(13,13,15,0.34) 58%, var(--background) 100%)",
+              "linear-gradient(90deg, rgba(13,13,15,0.9) 0%, rgba(13,13,15,0.62) 46%, rgba(13,13,15,0.08) 100%), linear-gradient(180deg, rgba(13,13,15,0.1) 0%, rgba(13,13,15,0.28) 58%, var(--background) 100%)",
           }}
         />
         <div
