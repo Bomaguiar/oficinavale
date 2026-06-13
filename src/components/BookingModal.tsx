@@ -177,12 +177,12 @@ export function BookingModal({
                       </button>
                     ))}
                   </div>
-                  <Button
-                    className="w-full mt-4 bg-brand hover:opacity-90 text-brand-foreground"
+                  <button
+                    className="w-full mt-4 inline-flex items-center justify-center rounded-md px-4 h-10 text-sm font-semibold bg-brand text-brand-foreground hover:opacity-90"
                     onClick={() => setStep(2)}
                   >
                     Continuar
-                  </Button>
+                  </button>
                 </div>
               )}
 
@@ -231,21 +231,23 @@ export function BookingModal({
                     </p>
                   </div>
                   <div className="flex gap-2">
-                    <Button
-                      variant="outline"
+                    <button
                       onClick={() => setStep(1)}
-                      className="border-border"
+                      className="inline-flex items-center justify-center gap-1 rounded-md border border-border bg-background px-4 h-10 text-sm font-medium text-foreground hover:border-white/30"
                     >
                       <ChevronLeft className="h-4 w-4" /> Voltar
-                    </Button>
-                    <Button
+                    </button>
+                    <button
                       disabled={!date || !time}
                       onClick={() => setStep(3)}
-                      className="flex-1 bg-brand hover:opacity-90 text-brand-foreground"
+                      style={{ color: "#fff", backgroundColor: "var(--brand)" }}
+                      className="flex-1 inline-flex items-center justify-center rounded-md px-4 h-10 text-sm font-semibold hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Continuar
-                    </Button>
+                    </button>
+
                   </div>
+
                 </div>
               )}
 
@@ -301,20 +303,20 @@ export function BookingModal({
                     <p className="text-xs text-destructive">{errors.consent}</p>
                   )}
                   <div className="flex gap-2 pt-2">
-                    <Button
-                      variant="outline"
+                    <button
                       onClick={() => setStep(2)}
-                      className="border-border"
+                      className="inline-flex items-center justify-center gap-1 rounded-md border border-border bg-background px-4 h-10 text-sm font-medium text-foreground hover:border-white/30"
                     >
                       <ChevronLeft className="h-4 w-4" /> Voltar
-                    </Button>
-                    <Button
+                    </button>
+                    <button
                       onClick={submit}
-                      className="flex-1 bg-brand hover:opacity-90 text-brand-foreground"
+                      className="flex-1 inline-flex items-center justify-center rounded-md px-4 h-10 text-sm font-semibold bg-brand text-brand-foreground hover:opacity-90"
                     >
                       Confirmar marcação
-                    </Button>
+                    </button>
                   </div>
+
                   <p className="text-[11px] text-muted-foreground text-center pt-1">
                     Ao confirmar, abrimos o WhatsApp com a sua marcação para enviar à oficina.
                   </p>
