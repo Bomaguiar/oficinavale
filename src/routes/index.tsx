@@ -120,10 +120,10 @@ function Index() {
       </header>
 
       {/* HERO */}
-      <section id="top" className="relative min-h-dvh flex items-center pt-24 pb-32 sm:pb-24 px-4 sm:px-6 overflow-hidden">
+      <section id="top" className="relative isolate min-h-dvh flex items-center pt-24 pb-32 sm:pb-24 px-4 sm:px-6 overflow-hidden bg-background">
         <div
           aria-hidden
-          className="absolute inset-0 -z-20"
+          className="absolute inset-0 z-0"
           style={{
             backgroundImage: `url(${heroBg})`,
             backgroundSize: "cover",
@@ -132,7 +132,7 @@ function Index() {
         />
         <div
           aria-hidden
-          className="absolute inset-0 -z-10"
+          className="absolute inset-0 z-10"
           style={{
             background:
               "linear-gradient(90deg, rgba(13,13,15,0.98) 0%, rgba(13,13,15,0.82) 42%, rgba(13,13,15,0.16) 78%, rgba(13,13,15,0.48) 100%), linear-gradient(180deg, rgba(13,13,15,0.18) 0%, rgba(13,13,15,0.42) 58%, var(--background) 100%)",
@@ -140,13 +140,13 @@ function Index() {
         />
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 opacity-60"
+          className="absolute inset-0 z-10 opacity-60"
           style={{
             backgroundImage:
               "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(227,34,25,0.25), transparent 60%)",
           }}
         />
-        <div className="mx-auto max-w-6xl w-full">
+        <div className="relative z-20 mx-auto max-w-6xl w-full">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1 text-xs text-muted-foreground mb-6">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
             Aberto agora · Seg–Sex 08:00–18:00
