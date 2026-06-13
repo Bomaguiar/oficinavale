@@ -137,21 +137,20 @@ function Index() {
         id="top"
         className="relative isolate min-h-dvh flex items-center pt-24 pb-32 sm:pb-24 px-4 sm:px-6 overflow-hidden bg-background"
       >
-        <div
+        <img
           aria-hidden
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: `url(${heroBg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "58% center",
-          }}
+          src={heroBg}
+          alt=""
+          width={1440}
+          height={1600}
+          className="absolute inset-0 z-0 h-full w-full object-cover object-[66%_center] opacity-80"
         />
         <div
           aria-hidden
           className="absolute inset-0 z-10"
           style={{
             background:
-              "linear-gradient(90deg, rgba(13,13,15,0.98) 0%, rgba(13,13,15,0.82) 42%, rgba(13,13,15,0.16) 78%, rgba(13,13,15,0.48) 100%), linear-gradient(180deg, rgba(13,13,15,0.18) 0%, rgba(13,13,15,0.42) 58%, var(--background) 100%)",
+              "linear-gradient(90deg, rgba(13,13,15,0.86) 0%, rgba(13,13,15,0.68) 46%, rgba(13,13,15,0.12) 100%), linear-gradient(180deg, rgba(13,13,15,0.18) 0%, rgba(13,13,15,0.34) 58%, var(--background) 100%)",
           }}
         />
         <div
