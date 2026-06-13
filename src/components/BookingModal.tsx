@@ -177,12 +177,12 @@ export function BookingModal({
                       </button>
                     ))}
                   </div>
-                  <Button
-                    className="w-full mt-4 bg-brand hover:opacity-90 text-brand-foreground"
+                  <button
+                    className="w-full mt-4 inline-flex items-center justify-center rounded-md px-4 h-10 text-sm font-semibold bg-brand text-brand-foreground hover:opacity-90"
                     onClick={() => setStep(2)}
                   >
                     Continuar
-                  </Button>
+                  </button>
                 </div>
               )}
 
