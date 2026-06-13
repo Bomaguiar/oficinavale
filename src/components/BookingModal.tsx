@@ -240,10 +240,12 @@ export function BookingModal({
                     <button
                       disabled={!date || !time}
                       onClick={() => setStep(3)}
-                      className="flex-1 inline-flex items-center justify-center rounded-md px-4 h-10 text-sm font-semibold bg-brand text-brand-foreground hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{ color: "#fff", backgroundColor: "var(--brand)" }}
+                      className="flex-1 inline-flex items-center justify-center rounded-md px-4 h-10 text-sm font-semibold hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Continuar
                     </button>
+
                   </div>
 
                 </div>
