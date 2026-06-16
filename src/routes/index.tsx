@@ -16,18 +16,23 @@ import {
   Check,
   Facebook,
   Instagram,
+  Truck,
+  Ruler,
+  FileCheck,
+  Menu,
+  X,
 } from "lucide-react";
 
 import { BookingModal } from "@/components/BookingModal";
+import { VanRentalModal } from "@/components/VanRentalModal";
 import { ChatWidget } from "@/components/ChatWidget";
 import { AnimatedLogo } from "@/components/AnimatedLogo";
 import { PHONE, PHONE_DISPLAY, whatsappLink } from "@/lib/whatsapp";
 
-import logoAsset from "@/assets/logo-banner.asset.json";
-import googleBadge from "@/assets/google-badge.asset.json";
-import vanAsset from "@/assets/van.asset.json";
-import ownerAsset from "@/assets/owner.asset.json";
-import headlightAsset from "@/assets/headlight.asset.json";
+import googleBadge from "@/assets/google-badge.png";
+import vanAsset from "@/assets/van.png";
+import ownerAsset from "@/assets/owner.png";
+import headlightAsset from "@/assets/headlight-before-after.png";
 import heroBg from "@/assets/hero-workshop-bg.jpg";
 
 export const Route = createFileRoute("/")({
@@ -97,10 +102,19 @@ const REVIEWS = [
 function Index() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [preselected, setPreselected] = useState<string | null>(null);
+  const [vanOpen, setVanOpen] = useState(false);
+  const [showPhone, setShowPhone] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const openBooking = (service?: string) => {
     setPreselected(service ?? null);
     setBookingOpen(true);
+  };
+
+  const openChat = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("ov-open-chat"));
+    }
   };
 
   return (
@@ -113,23 +127,145 @@ function Index() {
           <a href="#top" className="flex items-center gap-2" aria-label="Oficina Vale — início">
             <AnimatedLogo size={22} />
           </a>
-          <a
-            href={`tel:${PHONE}`}
-            onClick={() => track("call_clicked")}
-            className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-brand"
-          >
-            <Phone className="h-4 w-4" />
-            {PHONE_DISPLAY}
-          </a>
-          <a
-            href={`tel:${PHONE}`}
-            onClick={() => track("call_clicked")}
-            aria-label="Ligar"
-            className="sm:hidden inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand text-brand-foreground"
-          >
-            <Phone className="h-4 w-4" />
-          </a>
+          <nav className="hidden lg:flex items-center gap-1">
+            <button
+              onClick={() => {
+                track("booking_started");
+                openBooking();
+              }}
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-brand hover:bg-surface/60"
+            >
+              <Wrench className="h-4 w-4" /> Marcar Serviço
+            </button>
+            <button
+              onClick={() => {
+                track("van_rental_started");
+                setVanOpen(true);
+              }}
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-brand hover:bg-surface/60"
+            >
+              <Truck className="h-4 w-4" /> Reservar Carrinha
+            </button>
+            <button
+              onClick={() => {
+                track("chat_opened");
+                openChat();
+              }}
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-brand hover:bg-surface/60"
+            >
+              <MessageCircle className="h-4 w-4" /> Assistente
+            </button>
+            <a
+              href="#contacto"
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-brand hover:bg-surface/60"
+            >
+              <MapPin className="h-4 w-4" /> Localização
+            </a>
+          </nav>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="hidden sm:flex items-center">
+              {showPhone ? (
+                <a
+                  href={`tel:${PHONE}`}
+                  onClick={() => track("call_clicked")}
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 h-9 text-sm font-medium text-foreground hover:text-brand"
+                >
+                  <Phone className="h-4 w-4" />
+                  {PHONE_DISPLAY}
+                </a>
+              ) : (
+                <button
+                  onClick={() => setShowPhone(true)}
+                  aria-label="Mostrar número de telefone"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface/60 text-foreground transition hover:text-brand hover:border-brand"
+                >
+                  <Phone className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+            <a
+              href={whatsappLink("Olá! Gostaria de marcar um serviço na Oficina Vale.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => track("whatsapp_clicked")}
+              aria-label="Falar no WhatsApp"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#25D366] text-white hover:opacity-90"
+            >
+              <WhatsAppIcon className="h-5 w-5" />
+            </a>
+            <a
+              href={`tel:${PHONE}`}
+              onClick={() => track("call_clicked")}
+              aria-label="Ligar"
+              className="sm:hidden inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand text-brand-foreground"
+            >
+              <Phone className="h-4 w-4" />
+            </a>
+            <button
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={menuOpen}
+              className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface/60 text-foreground transition hover:text-brand hover:border-brand"
+            >
+              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
+
+        {/* MOBILE / TABLET MENU */}
+        {menuOpen && (
+          <div className="lg:hidden border-t border-border bg-background/95 backdrop-blur-md">
+            <nav className="mx-auto max-w-6xl px-4 sm:px-6 py-3 grid gap-1">
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  track("booking_started");
+                  openBooking();
+                }}
+                className="inline-flex items-center gap-2 rounded-lg px-3 py-3 text-sm font-medium text-foreground transition hover:text-brand hover:bg-surface/60"
+              >
+                <Wrench className="h-4 w-4 text-brand" /> Marcar Serviço
+              </button>
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  track("van_rental_started");
+                  setVanOpen(true);
+                }}
+                className="inline-flex items-center gap-2 rounded-lg px-3 py-3 text-sm font-medium text-foreground transition hover:text-brand hover:bg-surface/60"
+              >
+                <Truck className="h-4 w-4 text-brand" /> Reservar Carrinha
+              </button>
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  track("chat_opened");
+                  openChat();
+                }}
+                className="inline-flex items-center gap-2 rounded-lg px-3 py-3 text-sm font-medium text-foreground transition hover:text-brand hover:bg-surface/60"
+              >
+                <MessageCircle className="h-4 w-4 text-brand" /> Falar com Assistente
+              </button>
+              <a
+                href="#contacto"
+                onClick={() => setMenuOpen(false)}
+                className="inline-flex items-center gap-2 rounded-lg px-3 py-3 text-sm font-medium text-foreground transition hover:text-brand hover:bg-surface/60"
+              >
+                <MapPin className="h-4 w-4 text-brand" /> Localização
+              </a>
+              <a
+                href={`tel:${PHONE}`}
+                onClick={() => {
+                  setMenuOpen(false);
+                  track("call_clicked");
+                }}
+                className="inline-flex items-center gap-2 rounded-lg px-3 py-3 text-sm font-medium text-foreground transition hover:text-brand hover:bg-surface/60"
+              >
+                <Phone className="h-4 w-4 text-brand" /> {PHONE_DISPLAY}
+              </a>
+            </nav>
+          </div>
+        )}
       </header>
 
       {/* HERO */}
@@ -179,23 +315,34 @@ function Index() {
                 track("booking_started");
                 openBooking();
               }}
-              className="group inline-flex items-center gap-2 rounded-xl bg-brand text-brand-foreground px-6 py-4 text-base font-semibold hover:opacity-90 shadow-glow"
+              className="group inline-flex items-center gap-2 rounded-xl bg-brand text-brand-foreground px-6 py-4 text-base font-semibold shadow-glow transition-all duration-300 hover:scale-105 hover:brightness-110 active:scale-[0.98]"
             >
-              Marcar Serviço
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              <Wrench className="h-5 w-5" /> Marcar Serviço
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
-            <a
-              href="#assistente"
-              onClick={() => track("chat_opened")}
-              className="inline-flex items-center gap-2 rounded-xl border border-border bg-surface/40 px-6 py-4 text-base font-medium hover:border-white/30"
+            <button
+              onClick={() => {
+                track("van_rental_started");
+                setVanOpen(true);
+              }}
+              className="group inline-flex items-center gap-2 rounded-xl border border-border bg-surface/40 px-6 py-4 text-base font-medium transition-all duration-300 hover:scale-105 hover:border-white/40 hover:bg-surface/80 hover:shadow-lg"
+            >
+              <Truck className="h-5 w-5" /> Reservar Carrinha
+            </button>
+            <button
+              onClick={() => {
+                track("chat_opened");
+                openChat();
+              }}
+              className="inline-flex items-center gap-2 rounded-xl border border-border bg-surface/40 px-6 py-4 text-base font-medium transition-all duration-300 hover:scale-105 hover:border-white/40 hover:bg-surface/80 hover:shadow-lg"
             >
               <MessageCircle className="h-4 w-4" /> Falar com Assistente
-            </a>
+            </button>
           </div>
 
           <div className="mt-10 flex items-center gap-3">
             <img
-              src={googleBadge.url}
+              src={googleBadge}
               alt="Google 4,9 estrelas"
               className="h-14 w-auto"
               width={56}
@@ -254,12 +401,12 @@ function Index() {
                   track("booking_started", { service: s.name });
                   openBooking(s.name);
                 }}
-                className="group text-left rounded-2xl border border-border bg-surface p-6 hover:border-brand/60 hover:bg-surface/80 transition relative overflow-hidden"
+                className="group text-left rounded-2xl border border-border bg-surface p-6 transition-all duration-300 hover:border-brand/60 hover:bg-surface/80 hover:scale-[1.02] hover:shadow-xl relative overflow-hidden"
               >
                 {s.name === "Restauro de Faróis" && (
                   <div className="absolute inset-x-0 top-0 h-32 -z-0 opacity-30 group-hover:opacity-50 transition">
                     <img
-                      src={headlightAsset.url}
+                      src={headlightAsset}
                       alt=""
                       className="w-full h-full object-cover"
                       aria-hidden
@@ -287,7 +434,7 @@ function Index() {
           {/* Before/after proof */}
           <div className="mt-16 rounded-2xl border border-border bg-surface overflow-hidden grid md:grid-cols-2">
             <img
-              src={headlightAsset.url}
+              src={headlightAsset}
               alt="Antes e depois de restauro de faróis numa viatura"
               className="w-full h-full object-cover aspect-[4/3] md:aspect-auto"
               loading="lazy"
@@ -305,9 +452,9 @@ function Index() {
               </p>
               <button
                 onClick={() => openBooking("Restauro de Faróis")}
-                className="mt-6 inline-flex w-fit items-center gap-2 rounded-lg bg-brand text-brand-foreground px-5 py-3 text-sm font-semibold hover:opacity-90"
+                className="mt-6 inline-flex w-fit items-center gap-2 rounded-lg bg-brand text-brand-foreground px-5 py-3 text-sm font-semibold transition-all duration-300 hover:scale-105 hover:brightness-110 active:scale-[0.98]"
               >
-                Marcar restauro <ArrowRight className="h-4 w-4" />
+                Marcar restauro <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </div>
           </div>
@@ -320,13 +467,13 @@ function Index() {
           <div className="relative">
             <div className="absolute -inset-4 bg-brand/10 blur-3xl rounded-full -z-10" />
             <img
-              src={ownerAsset.url}
+              src={ownerAsset}
               alt="Mecânico da Oficina Vale junto à carrinha da empresa"
               className="rounded-2xl border border-border w-full max-w-md aspect-square object-cover"
               loading="lazy"
             />
             <img
-              src={vanAsset.url}
+              src={vanAsset}
               alt="Carrinha Oficina Vale"
               className="hidden md:block absolute -bottom-6 -right-6 w-44 rounded-xl border border-border shadow-2xl"
               loading="lazy"
@@ -347,10 +494,91 @@ function Index() {
             </p>
             <button
               onClick={() => openBooking()}
-              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-brand text-brand-foreground px-6 py-3.5 font-semibold hover:opacity-90"
+              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-brand text-brand-foreground px-6 py-3.5 font-semibold transition-all duration-300 hover:scale-105 hover:brightness-110 active:scale-[0.98]"
             >
-              Marcar Serviço <ArrowRight className="h-4 w-4" />
+              Marcar Serviço <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ALUGUER DE CARRINHAS */}
+      <section id="carrinhas" className="px-4 sm:px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <div className="rounded-3xl border border-border bg-surface overflow-hidden grid lg:grid-cols-2">
+            <div className="relative p-8 sm:p-10 flex flex-col justify-center">
+              <p className="text-brand text-sm font-medium uppercase tracking-wider">
+                Novo serviço
+              </p>
+              <h2 className="font-display text-4xl sm:text-5xl font-bold mt-2 text-balance">
+                Aluguer de carrinhas.
+              </h2>
+              <p className="mt-4 text-muted-foreground text-lg">
+                Temos 3 carrinhas disponíveis —{" "}
+                <span className="text-foreground font-medium">Ronaldo</span>,{" "}
+                <span className="text-foreground font-medium">Carlos</span> e{" "}
+                <span className="text-foreground font-medium">Joana</span>. Cada cliente pode alugar
+                uma de cada vez.
+              </p>
+
+              <div className="mt-6 grid sm:grid-cols-2 gap-3 text-sm">
+                <div className="flex items-start gap-2">
+                  <Clock className="h-4 w-4 text-brand mt-0.5 shrink-0" />
+                  <span className="text-muted-foreground">
+                    <strong className="text-foreground">10€/hora</strong> · mínimo de 2 horas
+                  </span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <MapPin className="h-4 w-4 text-brand mt-0.5 shrink-0" />
+                  <span className="text-muted-foreground">
+                    <strong className="text-foreground">+10€</strong> se sair do raio de 50 km
+                  </span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Ruler className="h-4 w-4 text-brand mt-0.5 shrink-0" />
+                  <span className="text-muted-foreground">
+                    3,10 m × 1,75 m × 1,90 m (comp. × larg. × alt.)
+                  </span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <FileCheck className="h-4 w-4 text-brand mt-0.5 shrink-0" />
+                  <span className="text-muted-foreground">Documentos por WhatsApp ou email</span>
+                </div>
+              </div>
+
+              <div className="mt-6 rounded-xl border border-border bg-background p-4 text-sm">
+                <p className="font-medium text-foreground">Documentos necessários para reservar</p>
+                <ul className="mt-2 list-disc pl-5 text-muted-foreground space-y-1">
+                  <li>Cartão de Cidadão ou Passaporte</li>
+                  <li>Carta de Condução</li>
+                  <li>Comprovativo de Morada</li>
+                </ul>
+              </div>
+
+              <button
+                onClick={() => {
+                  track("van_rental_started");
+                  setVanOpen(true);
+                }}
+                className="group mt-8 inline-flex w-fit items-center gap-2 rounded-xl bg-brand text-brand-foreground px-6 py-4 text-base font-semibold shadow-glow transition-all duration-300 hover:scale-105 hover:brightness-110 active:scale-[0.98]"
+              >
+                <Truck className="h-5 w-5" /> Reservar Carrinha
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </button>
+            </div>
+
+            <div className="relative min-h-[280px] bg-background flex items-center justify-center p-8">
+              <div className="absolute inset-0 opacity-30">
+                <img src={vanAsset} alt="" aria-hidden className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent" />
+              </div>
+              <img
+                src={vanAsset}
+                alt="Carrinha de aluguer da Oficina Vale"
+                className="relative w-full max-w-sm rounded-xl border border-border shadow-2xl"
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -458,7 +686,7 @@ function Index() {
               href="https://www.google.com/maps/dir/?api=1&destination=Praceta+Jos%C3%A9+Sebasti%C3%A3o+e+Silva+18%2C+Seixal"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-2 rounded-lg border border-border bg-background px-5 py-3 text-sm font-medium hover:border-white/30"
+              className="mt-8 inline-flex items-center gap-2 rounded-lg border border-border bg-background px-5 py-3 text-sm font-medium transition-all duration-300 hover:scale-105 hover:border-white/40 hover:shadow-lg"
             >
               <MapPin className="h-4 w-4" /> Como chegar
             </a>
@@ -497,16 +725,16 @@ function Index() {
                 track("booking_started");
                 openBooking();
               }}
-              className="inline-flex items-center gap-2 rounded-xl bg-white text-black px-6 py-4 font-semibold hover:bg-white/90"
+              className="inline-flex items-center gap-2 rounded-xl bg-white text-black px-6 py-4 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_-5px_rgba(255,255,255,0.4)] active:scale-[0.98]"
             >
-              Marcar Agora <ArrowRight className="h-4 w-4" />
+              Marcar Agora <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
             <a
               href={whatsappLink("Olá! Gostaria de marcar um serviço na Oficina Vale.")}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => track("whatsapp_clicked")}
-              className="inline-flex items-center gap-2 rounded-xl bg-black/40 backdrop-blur text-white border border-white/20 px-6 py-4 font-semibold hover:bg-black/60"
+              className="inline-flex items-center gap-2 rounded-xl bg-black/40 backdrop-blur text-white border border-white/20 px-6 py-4 font-semibold transition-all duration-300 hover:scale-105 hover:bg-black/70 hover:border-white/40 hover:shadow-[0_0_20px_-5px_rgba(255,255,255,0.25)]"
             >
               <MessageCircle className="h-4 w-4" /> WhatsApp
             </a>
@@ -584,7 +812,7 @@ function Index() {
             track("booking_started");
             openBooking();
           }}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand text-brand-foreground py-3 text-sm font-semibold"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand text-brand-foreground py-3 text-sm font-semibold transition-all duration-300 active:scale-[0.98]"
         >
           Marcar Agora
         </button>
@@ -592,6 +820,7 @@ function Index() {
 
       <ChatWidget />
       <BookingModal open={bookingOpen} onOpenChange={setBookingOpen} initialService={preselected} />
+      <VanRentalModal open={vanOpen} onOpenChange={setVanOpen} />
     </div>
   );
 }
@@ -604,6 +833,14 @@ function track(event: string, data?: Record<string, unknown>) {
   };
   w.plausible?.(event, data ? { props: data } : undefined);
   w.gtag?.("event", event, data);
+}
+
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+      <path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+    </svg>
+  );
 }
 
 function CookieBanner() {
@@ -630,7 +867,7 @@ function CookieBanner() {
           } catch {}
           setShow(false);
         }}
-        className="mt-3 w-full rounded-md bg-brand text-brand-foreground py-2 font-semibold"
+        className="mt-3 w-full rounded-md bg-brand text-brand-foreground py-2 font-semibold transition-all duration-300 hover:scale-[1.02] hover:brightness-110 active:scale-[0.98]"
       >
         Aceitar
       </button>

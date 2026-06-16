@@ -88,3 +88,8 @@
 @utility text-balance {
   text-wrap: balance;
 }
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--brand) 50%, transparent); }
+  50% { box-shadow: 0 0 20px 6px color-mix(in oklab, var(--brand) 35%, transparent); }
+}
