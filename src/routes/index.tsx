@@ -103,7 +103,6 @@ function Index() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [preselected, setPreselected] = useState<string | null>(null);
   const [vanOpen, setVanOpen] = useState(false);
-  const [showPhone, setShowPhone] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const openBooking = (service?: string) => {
@@ -122,27 +121,21 @@ function Index() {
       <CookieBanner />
 
       {/* NAV */}
-      <header className="fixed top-0 inset-x-0 z-30 backdrop-blur-md bg-background/70 border-b border-border">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center justify-between">
-          <a href="#top" className="flex items-center gap-2" aria-label="Oficina Vale — início">
+      <header className="fixed top-0 inset-x-0 z-30 backdrop-blur-xl bg-background/75 border-b border-border/60 shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset,0_8px_24px_-12px_rgba(0,0,0,0.4)]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 h-16 grid grid-cols-[auto_1fr_auto] items-center gap-4">
+          {/* Logo */}
+          <a href="#top" className="flex items-center shrink-0" aria-label="Oficina Vale — início">
             <AnimatedLogo size={22} />
           </a>
-          <nav className="hidden lg:flex items-center gap-1">
-            <button
-              onClick={() => {
-                track("booking_started");
-                openBooking();
-              }}
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-brand hover:bg-surface/60"
-            >
-              <Wrench className="h-4 w-4" /> Marcar Serviço
-            </button>
+
+          {/* Center nav */}
+          <nav className="hidden lg:flex items-center justify-center gap-1">
             <button
               onClick={() => {
                 track("van_rental_started");
                 setVanOpen(true);
               }}
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-brand hover:bg-surface/60"
+              className="inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               <Truck className="h-4 w-4" /> Reservar Carrinha
             </button>
@@ -151,61 +144,73 @@ function Index() {
                 track("chat_opened");
                 openChat();
               }}
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-brand hover:bg-surface/60"
+              className="inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               <MessageCircle className="h-4 w-4" /> Assistente
             </button>
             <a
               href="#contacto"
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition hover:text-brand hover:bg-surface/60"
+              className="inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               <MapPin className="h-4 w-4" /> Localização
             </a>
           </nav>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden sm:flex items-center">
-              {showPhone ? (
-                <a
-                  href={`tel:${PHONE}`}
-                  onClick={() => track("call_clicked")}
-                  className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 h-9 text-sm font-medium text-foreground hover:text-brand"
-                >
-                  <Phone className="h-4 w-4" />
-                  {PHONE_DISPLAY}
-                </a>
-              ) : (
-                <button
-                  onClick={() => setShowPhone(true)}
-                  aria-label="Mostrar número de telefone"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface/60 text-foreground transition hover:text-brand hover:border-brand"
-                >
-                  <Phone className="h-4 w-4" />
-                </button>
-              )}
-            </div>
+
+          {/* Right actions */}
+          <div className="flex items-center gap-2 justify-self-end">
+            {/* Phone — desktop */}
+            <a
+              href={`tel:${PHONE}`}
+              onClick={() => track("call_clicked")}
+              aria-label={`Ligar ${PHONE_DISPLAY}`}
+              className="hidden md:inline-flex items-center gap-2 h-9 px-3 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Phone className="h-4 w-4" />
+              <span className="tabular-nums">{PHONE_DISPLAY}</span>
+            </a>
+
+            {/* Divider */}
+            <span className="hidden md:block h-6 w-px bg-border/80" aria-hidden />
+
+            {/* WhatsApp icon button */}
             <a
               href={whatsappLink("Olá! Gostaria de marcar um serviço na Oficina Vale.")}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => track("whatsapp_clicked")}
               aria-label="Falar no WhatsApp"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#25D366] text-white hover:opacity-90"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-md text-[#25D366] hover:bg-surface/60 transition-colors"
             >
               <WhatsAppIcon className="h-5 w-5" />
             </a>
+
+            {/* Primary CTA */}
+            <button
+              onClick={() => {
+                track("booking_started");
+                openBooking();
+              }}
+              className="hidden sm:inline-flex items-center gap-1.5 h-9 px-4 rounded-md bg-brand text-brand-foreground text-sm font-semibold shadow-sm hover:bg-brand/90 transition-colors"
+            >
+              <Wrench className="h-4 w-4" /> Marcar Serviço
+            </button>
+
+            {/* Mobile call */}
             <a
               href={`tel:${PHONE}`}
               onClick={() => track("call_clicked")}
               aria-label="Ligar"
-              className="sm:hidden inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand text-brand-foreground"
+              className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md text-foreground hover:bg-surface/60 transition-colors"
             >
               <Phone className="h-4 w-4" />
             </a>
+
+            {/* Mobile menu */}
             <button
               onClick={() => setMenuOpen((v) => !v)}
               aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
               aria-expanded={menuOpen}
-              className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface/60 text-foreground transition hover:text-brand hover:border-brand"
+              className="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-md text-foreground hover:bg-surface/60 transition-colors"
             >
               {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -214,17 +219,17 @@ function Index() {
 
         {/* MOBILE / TABLET MENU */}
         {menuOpen && (
-          <div className="lg:hidden border-t border-border bg-background/95 backdrop-blur-md">
-            <nav className="mx-auto max-w-6xl px-4 sm:px-6 py-3 grid gap-1">
+          <div className="lg:hidden border-t border-border/60 bg-background/95 backdrop-blur-xl">
+            <nav className="mx-auto max-w-7xl px-4 sm:px-6 py-3 grid gap-1">
               <button
                 onClick={() => {
                   setMenuOpen(false);
                   track("booking_started");
                   openBooking();
                 }}
-                className="inline-flex items-center gap-2 rounded-lg px-3 py-3 text-sm font-medium text-foreground transition hover:text-brand hover:bg-surface/60"
+                className="inline-flex items-center gap-2 rounded-md px-3 py-3 text-sm font-semibold bg-brand text-brand-foreground justify-center sm:justify-start"
               >
-                <Wrench className="h-4 w-4 text-brand" /> Marcar Serviço
+                <Wrench className="h-4 w-4" /> Marcar Serviço
               </button>
               <button
                 onClick={() => {
@@ -232,7 +237,7 @@ function Index() {
                   track("van_rental_started");
                   setVanOpen(true);
                 }}
-                className="inline-flex items-center gap-2 rounded-lg px-3 py-3 text-sm font-medium text-foreground transition hover:text-brand hover:bg-surface/60"
+                className="inline-flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium text-foreground transition-colors hover:bg-surface/60"
               >
                 <Truck className="h-4 w-4 text-brand" /> Reservar Carrinha
               </button>
@@ -242,14 +247,14 @@ function Index() {
                   track("chat_opened");
                   openChat();
                 }}
-                className="inline-flex items-center gap-2 rounded-lg px-3 py-3 text-sm font-medium text-foreground transition hover:text-brand hover:bg-surface/60"
+                className="inline-flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium text-foreground transition-colors hover:bg-surface/60"
               >
                 <MessageCircle className="h-4 w-4 text-brand" /> Falar com Assistente
               </button>
               <a
                 href="#contacto"
                 onClick={() => setMenuOpen(false)}
-                className="inline-flex items-center gap-2 rounded-lg px-3 py-3 text-sm font-medium text-foreground transition hover:text-brand hover:bg-surface/60"
+                className="inline-flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium text-foreground transition-colors hover:bg-surface/60"
               >
                 <MapPin className="h-4 w-4 text-brand" /> Localização
               </a>
@@ -259,7 +264,7 @@ function Index() {
                   setMenuOpen(false);
                   track("call_clicked");
                 }}
-                className="inline-flex items-center gap-2 rounded-lg px-3 py-3 text-sm font-medium text-foreground transition hover:text-brand hover:bg-surface/60"
+                className="inline-flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium text-foreground transition-colors hover:bg-surface/60"
               >
                 <Phone className="h-4 w-4 text-brand" /> {PHONE_DISPLAY}
               </a>
