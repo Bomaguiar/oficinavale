@@ -4,7 +4,18 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { bookingWhatsappLink } from "@/lib/whatsapp";
-import { Check, ChevronLeft, MessageCircle } from "lucide-react";
+import {
+  Check,
+  ChevronLeft,
+  Circle,
+  ClipboardCheck,
+  Gauge,
+  Lightbulb,
+  MessageCircle,
+  Ruler,
+  Settings,
+  Wrench,
+} from "lucide-react";
 
 const SERVICES = [
   "Manutenção e Revisões",
@@ -15,6 +26,16 @@ const SERVICES = [
   "Pré-Inspeção IPO",
   "Outro",
 ];
+
+const SERVICE_ICONS: Record<string, React.ElementType<{ className?: string }>> = {
+  "Manutenção e Revisões": Wrench,
+  Travões: Circle,
+  "Diagnóstico Eletrónico": Gauge,
+  "Pneus e Alinhamento": Ruler,
+  "Restauro de Faróis": Lightbulb,
+  "Pré-Inspeção IPO": ClipboardCheck,
+  Outro: Settings,
+};
 
 const SLOTS = [
   "08:00",
@@ -86,7 +107,13 @@ export function BookingModal({
   const [time, setTime] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", phone: "", car: "", plate: "", consent: false });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [done, setDone] = useState<null | string>(null);
+  const [done, setDone] = useState<
+    | null
+    | { type: "calendar"; date: string; time: string; link: string }
+    | { type: "whatsapp"; link: string }
+  >(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [slotTaken, setSlotTaken] = useState(false);
 
   const dates = useMemo(() => nextWeekdays(14), []);
 
@@ -98,10 +125,12 @@ export function BookingModal({
       setTime(null);
       setDone(null);
       setErrors({});
+      setSubmitting(false);
+      setSlotTaken(false);
     }
   }, [open, initialService]);
 
-  function submit() {
+  async function submit() {
     const parsed = schema.safeParse(form);
     if (!parsed.success) {
       const e: Record<string, string> = {};
@@ -110,6 +139,59 @@ export function BookingModal({
       return;
     }
     if (!date || !time) return;
+    setSubmitting(true);
+    setSlotTaken(false);
+
+    const dateISO = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(
+      date.getDate(),
+    ).padStart(2, "0")}`;
+
+    try {
+      const res = await fetch("/api/booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          service,
+          name: form.name,
+          phone: form.phone,
+          car: form.car,
+          plate: form.plate.toUpperCase(),
+          dateISO,
+          time,
+          dateLabel: formatDateLong(date),
+        }),
+      });
+      const data = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
+      if (data && data.ok === false && data.error === "slot_taken") {
+        setSlotTaken(true);
+        setSubmitting(false);
+        setStep(2);
+        setTime(null);
+        return;
+      }
+      if (data && data.ok === true) {
+        // Booking confirmed and added to the calendar — also send a WhatsApp confirmation.
+        const link = bookingWhatsappLink({
+          service,
+          date: formatDateLong(date),
+          time,
+          name: form.name,
+          phone: form.phone,
+          car: form.car,
+          plate: form.plate.toUpperCase(),
+        });
+        setSubmitting(false);
+        setDone({ type: "calendar", date: formatDateLong(date), time, link });
+        if (typeof window !== "undefined") {
+          window.open(link, "_blank", "noopener,noreferrer");
+        }
+        return;
+      }
+    } catch {
+      // network/server issue — fall back to WhatsApp so the booking is never lost
+    }
+
+    // Fallback only when the server could not confirm the booking.
     const link = bookingWhatsappLink({
       service,
       date: formatDateLong(date),
@@ -119,7 +201,8 @@ export function BookingModal({
       car: form.car,
       plate: form.plate.toUpperCase(),
     });
-    setDone(link);
+    setSubmitting(false);
+    setDone({ type: "whatsapp", link });
     if (typeof window !== "undefined") {
       window.open(link, "_blank", "noopener,noreferrer");
     }
@@ -132,7 +215,11 @@ export function BookingModal({
         <div className="max-h-[calc(100dvh-2rem)] overflow-y-auto overflow-x-hidden p-6 sm:p-8">
           <DialogHeader>
             <DialogTitle className="text-2xl font-display">
-              {done ? "Marcação enviada" : "Marcar serviço"}
+              {done
+                ? done.type === "calendar"
+                  ? "Marcação confirmada"
+                  : "Marcação enviada"
+                : "Marcar serviço"}
             </DialogTitle>
             {!done && (
               <div className="mt-2 flex items-center gap-1.5">
@@ -151,21 +238,43 @@ export function BookingModal({
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand/15">
                 <Check className="h-7 w-7 text-brand" />
               </div>
-              <p className="text-base text-foreground">
-                Abrimos o WhatsApp com a sua marcação preenchida.
-                <br />
-                <span className="text-muted-foreground text-sm">
-                  Confirme o envio para concluir. Respondemos no horário de funcionamento.
-                </span>
-              </p>
-              <a
-                href={done}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-brand-foreground hover:opacity-90"
-              >
-                <MessageCircle className="h-4 w-4" /> Abrir WhatsApp novamente
-              </a>
+              {done.type === "calendar" ? (
+                <>
+                  <p className="text-base text-foreground">
+                    O horário estava livre e a sua marcação foi adicionada à agenda da oficina.
+                    <br />
+                    <span className="text-muted-foreground text-sm">
+                      {done.date} às {done.time}. Abrimos o WhatsApp para confirmar com a oficina.
+                    </span>
+                  </p>
+                  <a
+                    href={done.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-brand-foreground hover:opacity-90"
+                  >
+                    <MessageCircle className="h-4 w-4" /> Enviar confirmação por WhatsApp
+                  </a>
+                </>
+              ) : (
+                <>
+                  <p className="text-base text-foreground">
+                    Abrimos o WhatsApp com a sua marcação preenchida.
+                    <br />
+                    <span className="text-muted-foreground text-sm">
+                      Confirme o envio para concluir. Respondemos no horário de funcionamento.
+                    </span>
+                  </p>
+                  <a
+                    href={done.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-brand-foreground hover:opacity-90"
+                  >
+                    <MessageCircle className="h-4 w-4" /> Abrir WhatsApp novamente
+                  </a>
+                </>
+              )}
               <button
                 onClick={() => onOpenChange(false)}
                 className="block w-full text-sm text-muted-foreground hover:text-foreground"
@@ -179,19 +288,25 @@ export function BookingModal({
                 <div className="space-y-3">
                   <p className="text-sm text-muted-foreground">Que serviço pretende?</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {SERVICES.map((s) => (
-                      <button
-                        key={s}
-                        onClick={() => setService(s)}
-                        className={`rounded-lg border px-4 py-3 text-left text-sm transition ${
-                          service === s
-                            ? "border-brand bg-brand/10 text-foreground"
-                            : "border-border bg-background hover:border-white/30"
-                        }`}
-                      >
-                        {s}
-                      </button>
-                    ))}
+                    {SERVICES.map((s) => {
+                      const Icon = SERVICE_ICONS[s];
+                      return (
+                        <button
+                          key={s}
+                          onClick={() => setService(s)}
+                          className={`rounded-lg border px-4 py-3 text-left text-sm transition ${
+                            service === s
+                              ? "border-brand bg-brand/10 text-foreground"
+                              : "border-border bg-background hover:border-white/30"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            {Icon && <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />}
+                            <span>{s}</span>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                   <button
                     className="w-full mt-4 inline-flex items-center justify-center rounded-md px-4 h-10 text-sm font-semibold bg-brand text-brand-foreground hover:opacity-90"
@@ -204,6 +319,11 @@ export function BookingModal({
 
               {step === 2 && (
                 <div className="space-y-4">
+                  {slotTaken && (
+                    <div className="rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-foreground">
+                      Esse horário já está ocupado. Por favor escolha outra hora.
+                    </div>
+                  )}
                   <div>
                     <p className="text-sm text-muted-foreground mb-2">Escolha o dia</p>
                     <div className="flex max-w-full min-w-0 gap-2 overflow-x-auto pb-2">
@@ -322,9 +442,10 @@ export function BookingModal({
                     </button>
                     <button
                       onClick={submit}
-                      className="inline-flex h-10 min-w-0 w-full items-center justify-center rounded-md bg-brand px-4 text-sm font-semibold text-brand-foreground hover:opacity-90"
+                      disabled={submitting}
+                      className="inline-flex h-10 min-w-0 w-full items-center justify-center rounded-md bg-brand px-4 text-sm font-semibold text-brand-foreground hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      Confirmar marcação
+                      {submitting ? "A confirmar…" : "Confirmar marcação"}
                     </button>
                   </div>
 

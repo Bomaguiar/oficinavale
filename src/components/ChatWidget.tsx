@@ -35,6 +35,12 @@ export function ChatWidget() {
     if (open) setTimeout(() => inputRef.current?.focus(), 100);
   }, [open, messages.length]);
 
+  useEffect(() => {
+    const handler = () => setOpen(true);
+    window.addEventListener("ov-open-chat", handler);
+    return () => window.removeEventListener("ov-open-chat", handler);
+  }, []);
+
   const loading = status === "submitted" || status === "streaming";
 
   function send() {
@@ -50,9 +56,9 @@ export function ChatWidget() {
         <button
           onClick={() => setOpen(true)}
           aria-label="Abrir assistente"
-          className="fixed bottom-24 right-4 sm:bottom-6 sm:right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-brand text-brand-foreground shadow-glow hover:opacity-90 transition"
+          className="fixed bottom-24 right-4 sm:bottom-6 sm:right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-brand text-brand-foreground shadow-glow transition-all duration-300 hover:scale-110 hover:brightness-110 hover:shadow-[0_0_30px_-5px_rgba(255,255,255,0.35)] active:scale-[0.95]"
         >
-          <MessageCircle className="h-6 w-6" />
+          <MessageCircle className="h-6 w-6 transition-transform duration-300 group-hover:rotate-12" />
         </button>
       )}
 

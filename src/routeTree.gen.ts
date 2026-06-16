@@ -12,7 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiVanBookingRouteImport } from './routes/api/van-booking'
+import { Route as ApiVanAvailabilityRouteImport } from './routes/api/van-availability'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as ApiBookingRouteImport } from './routes/api/booking'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -29,9 +32,24 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiVanBookingRoute = ApiVanBookingRouteImport.update({
+  id: '/api/van-booking',
+  path: '/api/van-booking',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiVanAvailabilityRoute = ApiVanAvailabilityRouteImport.update({
+  id: '/api/van-availability',
+  path: '/api/van-availability',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBookingRoute = ApiBookingRouteImport.update({
+  id: '/api/booking',
+  path: '/api/booking',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -39,34 +57,68 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/privacidade': typeof PrivacidadeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/booking': typeof ApiBookingRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/van-availability': typeof ApiVanAvailabilityRoute
+  '/api/van-booking': typeof ApiVanBookingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/privacidade': typeof PrivacidadeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/booking': typeof ApiBookingRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/van-availability': typeof ApiVanAvailabilityRoute
+  '/api/van-booking': typeof ApiVanBookingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/privacidade': typeof PrivacidadeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/booking': typeof ApiBookingRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/van-availability': typeof ApiVanAvailabilityRoute
+  '/api/van-booking': typeof ApiVanBookingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/privacidade' | '/sitemap.xml' | '/api/chat'
+  fullPaths:
+    | '/'
+    | '/privacidade'
+    | '/sitemap.xml'
+    | '/api/booking'
+    | '/api/chat'
+    | '/api/van-availability'
+    | '/api/van-booking'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/privacidade' | '/sitemap.xml' | '/api/chat'
-  id: '__root__' | '/' | '/privacidade' | '/sitemap.xml' | '/api/chat'
+  to:
+    | '/'
+    | '/privacidade'
+    | '/sitemap.xml'
+    | '/api/booking'
+    | '/api/chat'
+    | '/api/van-availability'
+    | '/api/van-booking'
+  id:
+    | '__root__'
+    | '/'
+    | '/privacidade'
+    | '/sitemap.xml'
+    | '/api/booking'
+    | '/api/chat'
+    | '/api/van-availability'
+    | '/api/van-booking'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiBookingRoute: typeof ApiBookingRoute
   ApiChatRoute: typeof ApiChatRoute
+  ApiVanAvailabilityRoute: typeof ApiVanAvailabilityRoute
+  ApiVanBookingRoute: typeof ApiVanBookingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -92,11 +144,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/van-booking': {
+      id: '/api/van-booking'
+      path: '/api/van-booking'
+      fullPath: '/api/van-booking'
+      preLoaderRoute: typeof ApiVanBookingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/van-availability': {
+      id: '/api/van-availability'
+      path: '/api/van-availability'
+      fullPath: '/api/van-availability'
+      preLoaderRoute: typeof ApiVanAvailabilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/chat': {
       id: '/api/chat'
       path: '/api/chat'
       fullPath: '/api/chat'
       preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/booking': {
+      id: '/api/booking'
+      path: '/api/booking'
+      fullPath: '/api/booking'
+      preLoaderRoute: typeof ApiBookingRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -106,18 +179,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiBookingRoute: ApiBookingRoute,
   ApiChatRoute: ApiChatRoute,
+  ApiVanAvailabilityRoute: ApiVanAvailabilityRoute,
+  ApiVanBookingRoute: ApiVanBookingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
