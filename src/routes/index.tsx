@@ -103,7 +103,6 @@ function Index() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [preselected, setPreselected] = useState<string | null>(null);
   const [vanOpen, setVanOpen] = useState(false);
-  const [showPhone, setShowPhone] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const openBooking = (service?: string) => {
