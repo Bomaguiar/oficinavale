@@ -258,7 +258,7 @@ export function BookingModal({
             </DialogTitle>
             {!done && (
               <div className="mt-2 flex items-center gap-1.5">
-                {[1, 2, 3].map((n) => (
+                {[1, 2, 3, 4].map((n) => (
                   <div
                     key={n}
                     className={`h-1 flex-1 rounded-full ${n <= step ? "bg-brand" : "bg-white/10"}`}
