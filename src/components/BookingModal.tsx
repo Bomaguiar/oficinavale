@@ -480,6 +480,14 @@ export function BookingModal({
                     placeholder="9XX XXX XXX"
                     type="tel"
                   />
+                  <Field
+                    label="Email (opcional, para lembrete)"
+                    value={form.email}
+                    onChange={(v) => setForm({ ...form, email: v })}
+                    error={errors.email}
+                    placeholder="nome@exemplo.pt"
+                    type="email"
+                  />
                   <div className="grid grid-cols-2 gap-3">
                     <Field
                       label="Marca e modelo"
