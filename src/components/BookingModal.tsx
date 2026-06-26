@@ -48,15 +48,15 @@ const SERVICE_PRICING: Record<string, { price: string; note?: string }> = {
   Distribuição: { price: "desde 349,90 €" },
   Embreagem: { price: "desde 349,90 €" },
   "Diagnóstico Eletrónico": {
-    price: "40,00 € + IVA",
+    price: "49,20 €",
     note: "Gratuito se outra reparação for efetuada",
   },
   "Restauro de Faróis": {
-    price: "50,00 € + IVA",
+    price: "61,50 €",
     note: "Preço por par",
   },
   "Serviço Inspeção": {
-    price: "100,00 € + IVA",
+    price: "123,00 €",
   },
 };
 
