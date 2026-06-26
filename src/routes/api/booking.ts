@@ -6,6 +6,7 @@ const schema = z.object({
   service: z.string().min(2).max(80),
   name: z.string().min(2).max(80),
   phone: z.string().min(6).max(20),
+  email: z.string().trim().email().max(120).optional().or(z.literal("")),
   car: z.string().min(2).max(80),
   plate: z.string().min(2).max(15),
   dateISO: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
