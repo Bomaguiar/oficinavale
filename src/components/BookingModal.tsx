@@ -321,24 +321,32 @@ export function BookingModal({
             <div className="mt-6">
               {step === 1 && (
                 <div className="space-y-3">
-                  <p className="text-sm text-muted-foreground">Que serviço pretende?</p>
+                  <p className="text-sm text-muted-foreground">Que serviço pretende? (Pode selecionar vários)</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {SERVICES.map((s) => {
                       const Icon = SERVICE_ICONS[s];
                       const pricing = SERVICE_PRICING[s];
+                      const isSelected = selectedServices.includes(s);
                       return (
                         <button
                           key={s}
-                          onClick={() => setService(s)}
-                          className={`rounded-lg border px-4 py-3 text-left text-sm transition ${
-                            service === s
+                          onClick={() => toggleService(s)}
+                          className={`rounded-lg border px-4 py-3 text-left text-sm transition relative ${
+                            isSelected
                               ? "border-brand bg-brand/10 text-foreground"
                               : "border-border bg-background hover:border-white/30"
                           }`}
                         >
-                          <div className="flex items-center gap-2">
-                            {Icon && <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />}
-                            <span>{s}</span>
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-2">
+                              {Icon && <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />}
+                              <span>{s}</span>
+                            </div>
+                            {isSelected && (
+                              <div className="flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full bg-brand">
+                                <Check className="h-3 w-3 text-brand-foreground stroke-[3]" />
+                              </div>
+                            )}
                           </div>
                           {pricing && (
                             <div className="mt-1.5 pl-6">
@@ -360,7 +368,8 @@ export function BookingModal({
                     Valores indicativos, IVA incluído.
                   </p>
                   <button
-                    className="w-full mt-4 inline-flex items-center justify-center rounded-md px-4 h-10 text-sm font-semibold bg-brand text-brand-foreground hover:opacity-90"
+                    disabled={selectedServices.length === 0}
+                    className="w-full mt-4 inline-flex items-center justify-center rounded-md px-4 h-10 text-sm font-semibold bg-brand text-brand-foreground hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={() => setStep(2)}
                   >
                     Continuar
