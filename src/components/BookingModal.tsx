@@ -20,6 +20,8 @@ import {
 const SERVICES = [
   "Manutenção e Revisões",
   "Travões",
+  "Distribuição",
+  "Embreagem",
   "Diagnóstico Eletrónico",
   "Pneus e Alinhamento",
   "Restauro de Faróis",
@@ -30,11 +32,23 @@ const SERVICES = [
 const SERVICE_ICONS: Record<string, React.ElementType<{ className?: string }>> = {
   "Manutenção e Revisões": Wrench,
   Travões: Circle,
+  Distribuição: Settings,
+  Embreagem: Wrench,
   "Diagnóstico Eletrónico": Gauge,
   "Pneus e Alinhamento": Ruler,
   "Restauro de Faróis": Lightbulb,
   "Pré-Inspeção IPO": ClipboardCheck,
   Outro: Settings,
+};
+
+const SERVICE_PRICING: Record<string, { price: string; note?: string }> = {
+  "Manutenção e Revisões": {
+    price: "desde 189,90 €",
+    note: "Óleo motor, filtro de óleo, filtro de ar + check-up oferta",
+  },
+  Travões: { price: "desde 99,90 €", note: "Troca de pastilhas de travão" },
+  Distribuição: { price: "desde 349,90 €" },
+  Embreagem: { price: "desde 349,90 €" },
 };
 
 const SLOTS = [
