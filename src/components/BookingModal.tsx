@@ -176,6 +176,7 @@ export function BookingModal({
     setSubmitting(true);
     setSlotTaken(false);
 
+    const serviceString = selectedServices.join(", ");
     const dateISO = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(
       date.getDate(),
     ).padStart(2, "0")}`;
@@ -185,7 +186,7 @@ export function BookingModal({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          service,
+          service: serviceString,
           name: form.name,
           phone: form.phone,
           car: form.car,
@@ -206,7 +207,7 @@ export function BookingModal({
       if (data && data.ok === true) {
         // Booking confirmed and added to the calendar — also send a WhatsApp confirmation.
         const link = bookingWhatsappLink({
-          service,
+          service: serviceString,
           date: formatDateLong(date),
           time,
           name: form.name,
@@ -227,7 +228,7 @@ export function BookingModal({
 
     // Fallback only when the server could not confirm the booking.
     const link = bookingWhatsappLink({
-      service,
+      service: serviceString,
       date: formatDateLong(date),
       time,
       name: form.name,
