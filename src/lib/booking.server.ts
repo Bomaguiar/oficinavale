@@ -107,7 +107,7 @@ export async function createBooking(d: BookingInput): Promise<BookingResult> {
       d.service,
       d.dateLabel,
       d.time,
-      "",
+      d.email ?? "",
       "",
       eventLink,
     ];
