@@ -258,7 +258,7 @@ export function BookingModal({
             </DialogTitle>
             {!done && (
               <div className="mt-2 flex items-center gap-1.5">
-                {[1, 2, 3].map((n) => (
+                {[1, 2, 3, 4].map((n) => (
                   <div
                     key={n}
                     className={`h-1 flex-1 rounded-full ${n <= step ? "bg-brand" : "bg-white/10"}`}
@@ -501,16 +501,136 @@ export function BookingModal({
                       <ChevronLeft className="h-4 w-4" /> Voltar
                     </button>
                     <button
-                      onClick={submit}
-                      disabled={submitting}
-                      className="inline-flex h-10 min-w-0 w-full items-center justify-center rounded-md bg-brand px-4 text-sm font-semibold text-brand-foreground hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed"
+                      onClick={() => {
+                        const parsed = schema.safeParse(form);
+                        if (!parsed.success) {
+                          const e: Record<string, string> = {};
+                          parsed.error.issues.forEach((i) => (e[String(i.path[0])] = i.message));
+                          setErrors(e);
+                          return;
+                        }
+                        setErrors({});
+                        setStep(4);
+                      }}
+                      className="inline-flex h-10 min-w-0 w-full items-center justify-center rounded-md bg-brand px-4 text-sm font-semibold text-brand-foreground hover:opacity-90"
                     >
-                      {submitting ? "A confirmar…" : "Confirmar marcação"}
+                      Ver orçamento
                     </button>
                   </div>
 
                   <p className="text-[11px] text-muted-foreground text-center pt-1">
-                    Ao confirmar, abrimos o WhatsApp com a sua marcação para enviar à oficina.
+                    No próximo passo verá o orçamento estimado antes de confirmar.
+                  </p>
+                </div>
+              )}
+
+              {step === 4 && date && time && (
+                <div className="space-y-4">
+                  <p className="text-sm text-muted-foreground">
+                    Revisão do orçamento estimado. Os valores são indicativos e podem variar
+                    consoante o diagnóstico final.
+                  </p>
+
+                  <div className="rounded-lg border border-border bg-background/50 divide-y divide-border">
+                    {selectedServices.map((s) => {
+                      const p = SERVICE_PRICING[s];
+                      return (
+                        <div key={s} className="flex items-start justify-between gap-3 px-4 py-3">
+                          <div className="min-w-0">
+                            <div className="text-sm text-foreground">{s}</div>
+                            {p?.note && (
+                              <div className="text-[11px] leading-snug text-muted-foreground mt-0.5">
+                                {p.note}
+                              </div>
+                            )}
+                          </div>
+                          <div className="text-sm font-semibold text-brand whitespace-nowrap">
+                            {p?.price ?? "Sob orçamento"}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {(() => {
+                    const prices = selectedServices
+                      .map((s) => SERVICE_PRICING[s]?.price)
+                      .filter(Boolean) as string[];
+                    const nums = prices
+                      .map((p) => {
+                        const m = p.match(/([\d.,]+)\s*€/);
+                        if (!m) return null;
+                        return parseFloat(m[1].replace(/\./g, "").replace(",", "."));
+                      })
+                      .filter((n): n is number => n !== null);
+                    const total = nums.reduce((a, b) => a + b, 0);
+                    const hasFrom = prices.some((p) => p.toLowerCase().includes("desde"));
+                    const hasUnpriced = selectedServices.some((s) => !SERVICE_PRICING[s]);
+                    if (nums.length === 0) return null;
+                    const totalStr = total.toLocaleString("pt-PT", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    });
+                    return (
+                      <div className="rounded-lg border border-brand/30 bg-brand/5 px-4 py-3">
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="text-sm text-muted-foreground">
+                            Total estimado{hasFrom ? " (a partir de)" : ""}
+                          </span>
+                          <span className="text-lg font-display font-semibold text-foreground">
+                            {hasFrom ? "desde " : ""}
+                            {totalStr} €
+                          </span>
+                        </div>
+                        {hasUnpriced && (
+                          <p className="text-[11px] text-muted-foreground mt-1">
+                            Alguns serviços ficam sob orçamento após avaliação.
+                          </p>
+                        )}
+                        <p className="text-[11px] text-muted-foreground mt-1">IVA (23%) incluído.</p>
+                      </div>
+                    );
+                  })()}
+
+                  <div className="rounded-lg border border-border bg-background/50 px-4 py-3 text-sm space-y-1">
+                    <div className="flex justify-between gap-3">
+                      <span className="text-muted-foreground">Data</span>
+                      <span className="text-foreground text-right">{formatDateLong(date)}</span>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <span className="text-muted-foreground">Hora</span>
+                      <span className="text-foreground">{time}</span>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <span className="text-muted-foreground">Nome</span>
+                      <span className="text-foreground text-right">{form.name}</span>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <span className="text-muted-foreground">Viatura</span>
+                      <span className="text-foreground text-right">
+                        {form.car} · {form.plate.toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-[6rem_minmax(0,1fr)] gap-2 pt-1">
+                    <button
+                      onClick={() => setStep(3)}
+                      className="inline-flex h-10 items-center justify-center gap-1 rounded-md border border-border bg-background px-3 text-sm font-medium text-foreground hover:border-white/30"
+                    >
+                      <ChevronLeft className="h-4 w-4" /> Voltar
+                    </button>
+                    <button
+                      onClick={submit}
+                      disabled={submitting}
+                      className="inline-flex h-10 min-w-0 w-full items-center justify-center rounded-md bg-brand px-4 text-sm font-semibold text-brand-foreground hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                      {submitting ? "A confirmar…" : "Confirmar e enviar"}
+                    </button>
+                  </div>
+
+                  <p className="text-[11px] text-muted-foreground text-center">
+                    Ao confirmar, abrimos o WhatsApp com o pedido pré-preenchido para a oficina.
                   </p>
                 </div>
               )}

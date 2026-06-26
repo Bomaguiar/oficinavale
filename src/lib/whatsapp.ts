@@ -3,7 +3,18 @@ export const PHONE_DISPLAY = "962 527 006";
 export const WHATSAPP_NUMBER = "351962527006";
 
 export function whatsappLink(message: string) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  const text = encodeURIComponent(message);
+  // On desktop, wa.me redirects to api.whatsapp.com which is blocked on some
+  // corporate / school networks. Route desktop users straight to web.whatsapp.com
+  // and keep wa.me (the app-deeplink host) for mobile.
+  if (typeof navigator !== "undefined") {
+    const ua = navigator.userAgent || "";
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(ua);
+    if (!isMobile) {
+      return `https://web.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${text}&type=phone_number&app_absent=0`;
+    }
+  }
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
 }
 
 export function bookingWhatsappLink(data: {
