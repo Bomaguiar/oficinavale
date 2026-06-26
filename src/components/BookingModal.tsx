@@ -110,6 +110,13 @@ const schema = z.object({
     .min(9, "Telefone inválido")
     .max(20)
     .regex(/^[+0-9\s]+$/, "Telefone inválido"),
+  email: z
+    .string()
+    .trim()
+    .max(120, "Email demasiado longo")
+    .email("Email inválido")
+    .optional()
+    .or(z.literal("")),
   car: z.string().trim().min(2, "Indique a marca e modelo").max(80),
   plate: z.string().trim().min(4, "Matrícula inválida").max(15),
   consent: z.literal(true, { errorMap: () => ({ message: "Tem de aceitar a política" }) }),
@@ -130,7 +137,14 @@ export function BookingModal({
   );
   const [date, setDate] = useState<Date | null>(null);
   const [time, setTime] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: "", phone: "", car: "", plate: "", consent: false });
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    car: "",
+    plate: "",
+    consent: false,
+  });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [done, setDone] = useState<
     | null
