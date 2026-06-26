@@ -23,6 +23,7 @@ export function bookingWhatsappLink(data: {
   time: string;
   name: string;
   phone: string;
+  email?: string;
   car: string;
   plate: string;
 }) {
@@ -30,7 +31,7 @@ export function bookingWhatsappLink(data: {
 Serviço: ${data.service}
 Data: ${data.date} às ${data.time}
 Nome: ${data.name}
-Telefone: ${data.phone}
+Telefone: ${data.phone}${data.email ? `\nEmail: ${data.email}` : ""}
 Viatura: ${data.car}
 Matrícula: ${data.plate}`;
   return whatsappLink(msg);
