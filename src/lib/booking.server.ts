@@ -8,6 +8,7 @@ export type BookingInput = {
   service: string;
   name: string;
   phone: string;
+  email?: string;
   car: string;
   plate: string;
   dateISO: string; // YYYY-MM-DD
