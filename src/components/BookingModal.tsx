@@ -195,6 +195,8 @@ export function BookingModal({
       date.getDate(),
     ).padStart(2, "0")}`;
 
+    const emailTrimmed = form.email.trim();
+
     try {
       const res = await fetch("/api/booking", {
         method: "POST",
@@ -203,6 +205,7 @@ export function BookingModal({
           service: serviceString,
           name: form.name,
           phone: form.phone,
+          email: emailTrimmed || undefined,
           car: form.car,
           plate: form.plate.toUpperCase(),
           dateISO,
@@ -226,6 +229,7 @@ export function BookingModal({
           time,
           name: form.name,
           phone: form.phone,
+          email: emailTrimmed || undefined,
           car: form.car,
           plate: form.plate.toUpperCase(),
         });
@@ -247,6 +251,7 @@ export function BookingModal({
       time,
       name: form.name,
       phone: form.phone,
+      email: emailTrimmed || undefined,
       car: form.car,
       plate: form.plate.toUpperCase(),
     });
