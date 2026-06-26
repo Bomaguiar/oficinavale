@@ -8,6 +8,7 @@ export type BookingInput = {
   service: string;
   name: string;
   phone: string;
+  email?: string;
   car: string;
   plate: string;
   dateISO: string; // YYYY-MM-DD
@@ -82,7 +83,7 @@ export async function createBooking(d: BookingInput): Promise<BookingResult> {
       headers: calHeaders,
       body: JSON.stringify({
         summary: `${d.service} — ${d.name}`,
-        description: `Marcação Oficina Vale\nServiço: ${d.service}\nCliente: ${d.name}\nTelefone: ${d.phone}\nViatura: ${d.car}\nMatrícula: ${d.plate}`,
+        description: `Marcação Oficina Vale\nServiço: ${d.service}\nCliente: ${d.name}\nTelefone: ${d.phone}${d.email ? `\nEmail: ${d.email}` : ""}\nViatura: ${d.car}\nMatrícula: ${d.plate}`,
         start: { dateTime: startLocal, timeZone: TZ },
         end: { dateTime: endLocal, timeZone: TZ },
       }),
@@ -106,7 +107,7 @@ export async function createBooking(d: BookingInput): Promise<BookingResult> {
       d.service,
       d.dateLabel,
       d.time,
-      "",
+      d.email ?? "",
       "",
       eventLink,
     ];
