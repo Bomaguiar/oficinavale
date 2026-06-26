@@ -68,7 +68,6 @@ const SERVICES = [
     name: "Diagnóstico Eletrónico",
     desc: "Leitura de avarias com equipamento multimarca.",
   },
-  { icon: Gauge, name: "Pneus e Alinhamento", desc: "Montagem, equilibragem e direção a direito." },
   {
     icon: Lightbulb,
     name: "Restauro de Faróis",
@@ -76,8 +75,8 @@ const SERVICES = [
   },
   {
     icon: ClipboardCheck,
-    name: "Pré-Inspeção IPO",
-    desc: "Check-up completo antes do centro de inspeções.",
+    name: "Serviço Inspeção",
+    desc: "Check-up completo e deslocação ao centro de inspeções.",
   },
 ];
 

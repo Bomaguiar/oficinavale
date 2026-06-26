@@ -23,9 +23,8 @@ const SERVICES = [
   "Distribuição",
   "Embreagem",
   "Diagnóstico Eletrónico",
-  "Pneus e Alinhamento",
   "Restauro de Faróis",
-  "Pré-Inspeção IPO",
+  "Serviço Inspeção",
   "Outro",
 ];
 
@@ -35,9 +34,8 @@ const SERVICE_ICONS: Record<string, React.ElementType<{ className?: string }>> =
   Distribuição: Settings,
   Embreagem: Wrench,
   "Diagnóstico Eletrónico": Gauge,
-  "Pneus e Alinhamento": Ruler,
   "Restauro de Faróis": Lightbulb,
-  "Pré-Inspeção IPO": ClipboardCheck,
+  "Serviço Inspeção": ClipboardCheck,
   Outro: Settings,
 };
 
@@ -49,6 +47,17 @@ const SERVICE_PRICING: Record<string, { price: string; note?: string }> = {
   Travões: { price: "desde 99,90 €", note: "Troca de pastilhas de travão" },
   Distribuição: { price: "desde 349,90 €" },
   Embreagem: { price: "desde 349,90 €" },
+  "Diagnóstico Eletrónico": {
+    price: "40,00 € + IVA",
+    note: "Gratuito se outra reparação for efetuada",
+  },
+  "Restauro de Faróis": {
+    price: "50,00 € + IVA",
+    note: "Preço por par",
+  },
+  "Serviço Inspeção": {
+    price: "100,00 € + IVA",
+  },
 };
 
 const SLOTS = [
