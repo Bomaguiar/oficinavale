@@ -125,7 +125,9 @@ export function BookingModal({
   initialService?: string | null;
 }) {
   const [step, setStep] = useState(1);
-  const [service, setService] = useState(initialService ?? SERVICES[0]);
+  const [selectedServices, setSelectedServices] = useState<string[]>(
+    initialService ? [initialService] : [SERVICES[0]]
+  );
   const [date, setDate] = useState<Date | null>(null);
   const [time, setTime] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", phone: "", car: "", plate: "", consent: false });
@@ -143,7 +145,7 @@ export function BookingModal({
   useEffect(() => {
     if (open) {
       setStep(1);
-      setService(initialService ?? SERVICES[0]);
+      setSelectedServices(initialService ? [initialService] : [SERVICES[0]]);
       setDate(null);
       setTime(null);
       setDone(null);
@@ -152,6 +154,15 @@ export function BookingModal({
       setSlotTaken(false);
     }
   }, [open, initialService]);
+
+  const toggleService = (s: string) => {
+    setSelectedServices((prev) => {
+      if (prev.includes(s)) {
+        return prev.filter((x) => x !== s);
+      }
+      return [...prev, s];
+    });
+  };
 
   async function submit() {
     const parsed = schema.safeParse(form);
