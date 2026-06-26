@@ -20,6 +20,8 @@ import {
 const SERVICES = [
   "Manutenção e Revisões",
   "Travões",
+  "Distribuição",
+  "Embreagem",
   "Diagnóstico Eletrónico",
   "Pneus e Alinhamento",
   "Restauro de Faróis",
@@ -30,11 +32,23 @@ const SERVICES = [
 const SERVICE_ICONS: Record<string, React.ElementType<{ className?: string }>> = {
   "Manutenção e Revisões": Wrench,
   Travões: Circle,
+  Distribuição: Settings,
+  Embreagem: Wrench,
   "Diagnóstico Eletrónico": Gauge,
   "Pneus e Alinhamento": Ruler,
   "Restauro de Faróis": Lightbulb,
   "Pré-Inspeção IPO": ClipboardCheck,
   Outro: Settings,
+};
+
+const SERVICE_PRICING: Record<string, { price: string; note?: string }> = {
+  "Manutenção e Revisões": {
+    price: "desde 189,90 €",
+    note: "Óleo motor, filtro de óleo, filtro de ar + check-up oferta",
+  },
+  Travões: { price: "desde 99,90 €", note: "Troca de pastilhas de travão" },
+  Distribuição: { price: "desde 349,90 €" },
+  Embreagem: { price: "desde 349,90 €" },
 };
 
 const SLOTS = [
@@ -290,6 +304,7 @@ export function BookingModal({
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {SERVICES.map((s) => {
                       const Icon = SERVICE_ICONS[s];
+                      const pricing = SERVICE_PRICING[s];
                       return (
                         <button
                           key={s}
@@ -304,10 +319,25 @@ export function BookingModal({
                             {Icon && <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />}
                             <span>{s}</span>
                           </div>
+                          {pricing && (
+                            <div className="mt-1.5 pl-6">
+                              <div className="text-[13px] font-semibold text-brand">
+                                {pricing.price}
+                              </div>
+                              {pricing.note && (
+                                <div className="text-[11px] leading-snug text-muted-foreground">
+                                  {pricing.note}
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </button>
                       );
                     })}
                   </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Valores indicativos, IVA incluído.
+                  </p>
                   <button
                     className="w-full mt-4 inline-flex items-center justify-center rounded-md px-4 h-10 text-sm font-semibold bg-brand text-brand-foreground hover:opacity-90"
                     onClick={() => setStep(2)}
