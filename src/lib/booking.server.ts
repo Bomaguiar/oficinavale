@@ -75,10 +75,10 @@ export async function createBooking(d: BookingInput): Promise<BookingResult> {
     // if freebusy fails, continue and still attempt booking
   }
 
-  // 2. Create the calendar event
+  // 2. Create the calendar event and invite the customer when email is provided.
   let eventLink = "";
   try {
-    const ev = await fetch(`${CAL_GW}/calendars/${encodeURIComponent(CALENDAR_ID)}/events`, {
+    const ev = await fetch(`${CAL_GW}/calendars/${encodeURIComponent(CALENDAR_ID)}/events?sendUpdates=all`, {
       method: "POST",
       headers: calHeaders,
       body: JSON.stringify({
@@ -86,6 +86,7 @@ export async function createBooking(d: BookingInput): Promise<BookingResult> {
         description: `Marcação Oficina Vale\nServiço: ${d.service}\nCliente: ${d.name}\nTelefone: ${d.phone}${d.email ? `\nEmail: ${d.email}` : ""}\nViatura: ${d.car}\nMatrícula: ${d.plate}`,
         start: { dateTime: startLocal, timeZone: TZ },
         end: { dateTime: endLocal, timeZone: TZ },
+        attendees: d.email ? [{ email: d.email }] : undefined,
       }),
     });
     if (ev.ok) {
@@ -209,10 +210,10 @@ export async function createVanBooking(d: VanBookingInput): Promise<VanBookingRe
 
   const price = vanPrice(d.hours, d.outsideRadius);
 
-  // 2. Create a dedicated calendar event named after the van.
+  // 2. Create a dedicated calendar event named after the van and invite the customer.
   let eventLink = "";
   try {
-    const ev = await fetch(`${CAL_GW}/calendars/${encodeURIComponent(CALENDAR_ID)}/events`, {
+    const ev = await fetch(`${CAL_GW}/calendars/${encodeURIComponent(CALENDAR_ID)}/events?sendUpdates=all`, {
       method: "POST",
       headers: calHeaders,
       body: JSON.stringify({
@@ -221,6 +222,7 @@ export async function createVanBooking(d: VanBookingInput): Promise<VanBookingRe
         start: { dateTime: startLocal, timeZone: TZ },
         end: { dateTime: endLocal, timeZone: TZ },
         extendedProperties: { private: { van: d.van, type: "aluguer" } },
+        attendees: d.email ? [{ email: d.email }] : undefined,
       }),
     });
     if (ev.ok) {
