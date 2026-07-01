@@ -307,7 +307,7 @@ function Index() {
             Aberto agora · Seg–Sex 08:00–18:00
           </div>
           <h1 className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold leading-[0.95] text-balance max-w-4xl">
-            A sua oficina de <span className="text-brand">confiança</span> no Seixal.
+            A sua oficina de <span className="text-brand">confiança</span>.
           </h1>
           <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-xl text-balance">
             Reparações honestas, preços transparentes e entrega rápida. Multimarca, sem rodeios.
@@ -489,7 +489,7 @@ function Index() {
               Pessoas reais. Reparações honestas.
             </h2>
             <p className="mt-6 text-muted-foreground text-lg">
-              Somos uma oficina de bairro no Seixal. Aqui não há surpresas na conta — explicamos o
+              Somos uma oficina de bairro. Aqui não há surpresas na conta — explicamos o
               problema, mostramos a peça, e só fazemos o que é preciso.
             </p>
             <p className="mt-4 text-muted-foreground">
@@ -650,7 +650,7 @@ function Index() {
           <div>
             <p className="text-brand text-sm font-medium uppercase tracking-wider">Onde estamos</p>
             <h2 className="font-display text-4xl sm:text-5xl font-bold mt-2 text-balance">
-              Praceta José Sebastião e Silva 18, Seixal.
+              Praceta José Sebastião e Silva 18.
             </h2>
 
             <div className="mt-8 space-y-5">
@@ -680,7 +680,7 @@ function Index() {
                 <div>
                   <p className="font-medium">Morada</p>
                   <p className="text-muted-foreground text-sm">
-                    Praceta José Sebastião e Silva 18, Seixal
+                    Praceta José Sebastião e Silva 18
                   </p>
                 </div>
               </div>
@@ -752,12 +752,12 @@ function Index() {
           <div>
             <AnimatedLogo size={22} />
             <p className="mt-4 text-muted-foreground">
-              Oficina auto multimarca no Seixal. Reparação honesta, preço justo.
+              Oficina auto multimarca. Reparação honesta, preço justo.
             </p>
           </div>
           <div>
             <p className="font-semibold mb-3">Contacto</p>
-            <p className="text-muted-foreground">Praceta José Sebastião e Silva 18, Seixal</p>
+            <p className="text-muted-foreground">Praceta José Sebastião e Silva 18</p>
             <a
               href={`tel:${PHONE}`}
               className="block mt-2 text-muted-foreground hover:text-foreground"
@@ -798,7 +798,7 @@ function Index() {
         </div>
         <div className="mx-auto max-w-6xl mt-10 pt-6 border-t border-border text-xs text-muted-foreground flex justify-between flex-wrap gap-2">
           <span>© {new Date().getFullYear()} Oficina Vale. Todos os direitos reservados.</span>
-          <span>Seixal · Portugal</span>
+          <span>Portugal</span>
         </div>
       </footer>
 
