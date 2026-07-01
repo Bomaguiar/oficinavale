@@ -1,7 +1,7 @@
 const CAL_GW = "https://connector-gateway.lovable.dev/google_calendar/calendar/v3";
 const SHEETS_GW = "https://connector-gateway.lovable.dev/google_sheets/v4";
 const CALENDAR_ID = "primary";
-const SPREADSHEET_ID = "1Dk094dW6mXDoE3IXuvnF3LhVfw6jheBYIRAV-KlWarI";
+const SPREADSHEET_ID = "1G7Z0V7P1nAIpeouAYU5p2b5OVT1g5DNuC9AaoDE9tc8";
 const TZ = "Europe/Lisbon";
 
 export type BookingInput = {
