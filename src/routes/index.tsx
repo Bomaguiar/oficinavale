@@ -307,7 +307,7 @@ function Index() {
             Aberto agora · Seg–Sex 08:00–18:00
           </div>
           <h1 className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold leading-[0.95] text-balance max-w-4xl">
-            A sua oficina de <span className="text-brand">confiança</span> no Seixal.
+            A sua oficina de <span className="text-brand">confiança</span>.
           </h1>
           <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-xl text-balance">
             Reparações honestas, preços transparentes e entrega rápida. Multimarca, sem rodeios.
